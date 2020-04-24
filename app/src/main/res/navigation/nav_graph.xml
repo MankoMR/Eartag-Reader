@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/FirstFragment">
+
+    <fragment
+        android:id="@+id/FirstFragment"
+        android:name="ch.manko.usingocrinapps.googlemlkitwithcamerax.fragments.TextListFragment"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_list">
+
+        <action
+            android:id="@+id/action_AddText"
+            app:destination="@id/SecondFragment" />
+        <argument
+            android:name="tvds"
+            app:argType="string[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/SecondFragment"
+        android:name="ch.manko.usingocrinapps.googlemlkitwithcamerax.fragments.AnalysePhotoFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_analysePhoto">
+
+        <action
+            android:id="@+id/action_ShowList"
+            app:destination="@id/FirstFragment" />
+    </fragment>
+</navigation>

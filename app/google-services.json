@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "20518099874",
+    "firebase_url": "https://photoreading-test.firebaseio.com",
+    "project_id": "photoreading-test",
+    "storage_bucket": "photoreading-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:20518099874:android:70a5aff5047a07fe6eb0fb",
+        "android_client_info": {
+          "package_name": "ch.manko.usingocrinapps.googlemlkitinandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "20518099874-uk9q58779b4ntl5062d1q1eqog3jukqq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv6BeiMeEFL9qaey8RSvXq-ETzXU43EqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "20518099874-uk9q58779b4ntl5062d1q1eqog3jukqq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:20518099874:android:3b34400017521e256eb0fb",
+        "android_client_info": {
+          "package_name": "ch.manko.usingocrinapps.googlemlkitwithcamerax"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "20518099874-uk9q58779b4ntl5062d1q1eqog3jukqq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv6BeiMeEFL9qaey8RSvXq-ETzXU43EqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "20518099874-uk9q58779b4ntl5062d1q1eqog3jukqq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

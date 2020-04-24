@@ -1,0 +1,2 @@
+rootProject.name='Google ML Kit with CameraX'
+include ':app'
