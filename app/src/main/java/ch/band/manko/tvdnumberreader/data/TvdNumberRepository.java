@@ -44,10 +44,9 @@ public class TvdNumberRepository {
         });
     }
 
-    public boolean deleteAll(){
+    public void deleteAll(){
         TvdNumberDatabase.databaseWriteExecutor.execute(()->{
             database.DeleteAll();
         });
-        return Objects.requireNonNull(getAll().getValue()).size() == 0;
     }
 }
