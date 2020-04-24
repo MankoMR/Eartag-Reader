@@ -30,11 +30,13 @@ import java.util.concurrent.Executors;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
+import ch.band.manko.tvdnumberreader.AnalysePhotoViewModel;
 import ch.band.manko.tvdnumberreader.TextRecognizer;
 import ch.band.manko.tvdnumberreader.adapters.ProposedTvdListAdapter;
 import ch.band.manko.tvdnumberreader.databinding.FragmentAnalysePhotoBinding;
@@ -50,7 +52,7 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
     private static final String[] REQUIRED_PERMISSIONS = {Manifest.permission.CAMERA};
 
     private Executor executor = Executors.newSingleThreadExecutor();
-    private AnalysePhotoViewModel viewModel = new AnalysePhotoViewModel(this);
+    private AnalysePhotoViewModel viewModel = new AnalysePhotoViewModel(this,getContext());
 
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private FragmentAnalysePhotoBinding binding;
@@ -119,9 +121,7 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
     }
 
     private void navigateBack(){
-        AnalysePhotoFragmentDirections.ActionShowList action =
-                AnalysePhotoFragmentDirections.actionShowList()
-                        .setTvds(viewModel.getConfirmedTvds());
+        NavDirections action = AnalysePhotoFragmentDirections.actionShowList();
         Navigation.findNavController(binding.getRoot()).navigate(action);
     }
 

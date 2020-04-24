@@ -14,11 +14,6 @@
         <action
             android:id="@+id/action_AddText"
             app:destination="@id/AddFragment" />
-        <argument
-            android:name="tvds"
-            android:defaultValue="@null"
-            app:argType="string[]"
-            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/AddFragment"

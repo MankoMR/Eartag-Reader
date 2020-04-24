@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -14,11 +17,20 @@ import java.util.List;
 
 import ch.band.manko.tvdnumberreader.R;
 import ch.band.manko.tvdnumberreader.adapters.ConfirmedTvdNumberListAdapter;
+import ch.band.manko.tvdnumberreader.data.TvdNumberRepository;
 import ch.band.manko.tvdnumberreader.databinding.FragmentListBinding;
 import ch.band.manko.tvdnumberreader.models.TvdNumber;
 
 public class TextListFragment extends Fragment {
     FragmentListBinding binding;
+    TvdNumberRepository repository;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        repository = new TvdNumberRepository(getContext());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -27,16 +39,9 @@ public class TextListFragment extends Fragment {
         binding.rvTextlist.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvTextlist.setAdapter(new ConfirmedTvdNumberListAdapter());
 
-        Bundle args = getArguments();
-        try {
-            updateProposedList(extractNumbers(args));
-        } catch (NullPointerException e) {
-        }
-
         binding.fabAdd.setOnClickListener(view->{
-            //Todo: Setup proper navigation
-            NavHostFragment.findNavController(TextListFragment.this)
-                    .navigate(R.id.action_AddText);
+            NavDirections action = TextListFragmentDirections.actionAddText();
+            Navigation.findNavController(binding.getRoot()).navigate(action);
         });
         return binding.getRoot();
     }
@@ -45,14 +50,10 @@ public class TextListFragment extends Fragment {
         adapter.submitList(list);
         adapter.notifyDataSetChanged();
     }
-    private List<TvdNumber> extractNumbers(Bundle bundle) throws NullPointerException{
-        String[] tvds = TextListFragmentArgs.fromBundle(bundle).getTvds();
-        if (tvds == null)
-            throw new NullPointerException();
-        ArrayList<TvdNumber> list = new ArrayList<>();
-        for (String num :tvds) {
-            list.add(new TvdNumber(num));
-        }
-        return list;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateProposedList(repository.getAll());
     }
 }
