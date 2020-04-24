@@ -22,9 +22,12 @@ public class TvdNumberRepository {
         TvdNumberDatabase db = TvdNumberDatabase.getDatabase(context);
         database = db.numberDao();
     }
-    public String AllTvdNUmbersasCSV(){
-        String s = "";
-        return s;
+    public String AllTvdNUmbersasCSV(Context context){
+        StringBuilder s = new StringBuilder(context.getResources().getString(R.string.tvdNumber) + ";\n");
+        for (TvdNumber number: Objects.requireNonNull(getAll().getValue())) {
+            s.append(number.tvdNumber).append(";\n");
+        }
+        return s.toString();
     }
     public LiveData<List<TvdNumber>> getAll(){
         return  database.getAll();

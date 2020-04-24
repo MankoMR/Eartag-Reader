@@ -1,7 +1,9 @@
 <resources>
-    <string name="app_name">Tvd-Number Reader</string>
+    <string name="app_name">TVD-Number Reader</string>
     <string name="action_settings">Settings</string>
-    <string name="main_fragment_name">Tvd-Number List</string>
-    <string name="add_fragment_name">Add Tvd-Number</string>
-
+    <string name="main_fragment_name">TVD-Number List</string>
+    <string name="add_fragment_name">Add TVD-Number</string>
+    <string name="clear_list">Clear List</string>
+    <string name="share_list">Share List</string>
+    <string name="tvdNumber">TVD-Number</string>
 </resources>
