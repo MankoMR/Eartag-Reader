@@ -1,20 +1,25 @@
 package ch.band.manko.tvdnumberreader;
 
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import ch.band.manko.tvdnumberreader.data.TvdNumberRepository;
 import ch.band.manko.tvdnumberreader.databinding.ActivityMainBinding;
+
+import static androidx.core.content.FileProvider.getUriForFile;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -60,6 +65,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    private Uri createFile(String name, TvdNumberRepository repository) throws IOException {
+        File path = new File(getFilesDir(),getString(R.string.tvdnumberlists));
+        File csv = new File(path,name+".csv");
+        FileWriter writer = new FileWriter(csv);
+        writer.append(repository.AllTvdNUmbersasCSV(getApplicationContext()));
+        writer.close();
+        return getUriForFile(getApplicationContext(), getText(R.string.package_).toString(), csv);
     }
     private AlertDialog buildDialog(DialogInterface.OnClickListener ok){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
