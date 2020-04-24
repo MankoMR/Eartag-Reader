@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:20518099874:android:70a5aff5047a07fe6eb0fb",
         "android_client_info": {
-          "package_name": "ch.manko.usingocrinapps.googlemlkitinandroid"
+          "package_name": "ch.band.manko.tvdnumberreader"
         }
       },
       "oauth_client": [
@@ -39,7 +39,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:20518099874:android:3b34400017521e256eb0fb",
         "android_client_info": {
-          "package_name": "ch.manko.usingocrinapps.googlemlkitwithcamerax"
+          "package_name": "ch.band.manko.tvdnumberreader"
         }
       },
       "oauth_client": [

@@ -1,4 +1,4 @@
-package ch.manko.usingocrinapps.googlemlkitwithcamerax;
+package ch.band.manko.tvdnumberreader;
 
 import android.os.Bundle;
 
@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
+
 
 public class MainActivity extends AppCompatActivity {
 

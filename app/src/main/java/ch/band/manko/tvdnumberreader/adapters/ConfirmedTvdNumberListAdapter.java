@@ -1,4 +1,4 @@
-package ch.manko.usingocrinapps.googlemlkitwithcamerax.adapters;
+package ch.band.manko.tvdnumberreader.adapters;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.models.TvdNumber;
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.databinding.ConfirmedTvdnumberItemBinding;
+import ch.band.manko.tvdnumberreader.databinding.ConfirmedTvdnumberItemBinding;
+import ch.band.manko.tvdnumberreader.models.TvdNumber;
 
 public class ConfirmedTvdNumberListAdapter extends ListAdapter<TvdNumber, ConfirmedTvdNumberListAdapter.ConfirmedTvdNumberItem> {
     private static final DiffUtil.ItemCallback<TvdNumber> DIFF_CALLBACK =

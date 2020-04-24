@@ -1,4 +1,4 @@
-package ch.manko.usingocrinapps.googlemlkitwithcamerax.data;
+package ch.band.manko.tvdnumberreader.data;
 
 import android.content.Context;
 import androidx.room.Room;
@@ -6,7 +6,8 @@ import androidx.room.Room;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.models.TvdNumber;
+import ch.band.manko.tvdnumberreader.models.TvdNumber;
+
 
 public class TvdNumberRepository {
     private static TvdNumberDatabase database;

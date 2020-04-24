@@ -1,4 +1,4 @@
-package ch.manko.usingocrinapps.googlemlkitwithcamerax.fragments;
+package ch.band.manko.tvdnumberreader.fragments;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -35,10 +35,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.TextRecognizer;
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.models.ProposedTvdNumber;
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.adapters.ProposedTvdListAdapter;
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.databinding.FragmentAnalysePhotoBinding;
+import ch.band.manko.tvdnumberreader.TextRecognizer;
+import ch.band.manko.tvdnumberreader.adapters.ProposedTvdListAdapter;
+import ch.band.manko.tvdnumberreader.databinding.FragmentAnalysePhotoBinding;
+import ch.band.manko.tvdnumberreader.models.ProposedTvdNumber;
 
 public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Provider, AnalysePhotoViewModel.CommandExecutor {
     private static final String TAG = AnalysePhotoFragment.class.getSimpleName();

@@ -1,4 +1,4 @@
-package ch.manko.usingocrinapps.googlemlkitwithcamerax;
+package ch.band.manko.tvdnumberreader;
 
 import android.annotation.SuppressLint;
 import android.media.Image;

@@ -1,4 +1,4 @@
-package ch.manko.usingocrinapps.googlemlkitwithcamerax.fragments;
+package ch.band.manko.tvdnumberreader.fragments;
 
 import android.util.Log;
 
@@ -7,9 +7,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.TextRecognizer;
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.models.ProposedTvdNumber;
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.adapters.ProposedTvdListAdapter;
+import ch.band.manko.tvdnumberreader.TextRecognizer;
+import ch.band.manko.tvdnumberreader.adapters.ProposedTvdListAdapter;
+import ch.band.manko.tvdnumberreader.models.ProposedTvdNumber;
 
 public class AnalysePhotoViewModel implements TextRecognizer.ResultListener, ProposedTvdListAdapter.ItemInteractions {
     private static final String TAG = AnalysePhotoViewModel.class.getSimpleName();

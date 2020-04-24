@@ -1,4 +1,4 @@
-package ch.manko.usingocrinapps.googlemlkitwithcamerax.adapters;
+package ch.band.manko.tvdnumberreader.adapters;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.models.ProposedTvdNumber;
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.databinding.ProposedTvdItemBinding;
+import ch.band.manko.tvdnumberreader.databinding.ProposedTvdItemBinding;
+import ch.band.manko.tvdnumberreader.models.ProposedTvdNumber;
 
 public class ProposedTvdListAdapter extends ListAdapter<ProposedTvdNumber, ProposedTvdListAdapter.ProposedTvdItem> {
 

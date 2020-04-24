@@ -1,4 +1,4 @@
-package ch.manko.usingocrinapps.googlemlkitwithcamerax.fragments;
+package ch.band.manko.tvdnumberreader.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.R;
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.models.TvdNumber;
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.adapters.ConfirmedTvdNumberListAdapter;
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.databinding.FragmentListBinding;
+import ch.band.manko.tvdnumberreader.R;
+import ch.band.manko.tvdnumberreader.adapters.ConfirmedTvdNumberListAdapter;
+import ch.band.manko.tvdnumberreader.databinding.FragmentListBinding;
+import ch.band.manko.tvdnumberreader.models.TvdNumber;
 
 public class TextListFragment extends Fragment {
     FragmentListBinding binding;
@@ -34,6 +34,7 @@ public class TextListFragment extends Fragment {
         }
 
         binding.fabAdd.setOnClickListener(view->{
+            //Todo: Setup proper navigation
             NavHostFragment.findNavController(TextListFragment.this)
                     .navigate(R.id.action_AddText);
         });

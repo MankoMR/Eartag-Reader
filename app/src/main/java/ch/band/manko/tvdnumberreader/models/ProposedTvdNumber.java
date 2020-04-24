@@ -1,4 +1,4 @@
-package ch.manko.usingocrinapps.googlemlkitwithcamerax.models;
+package ch.band.manko.tvdnumberreader.models;
 
 public class ProposedTvdNumber implements Comparable<ProposedTvdNumber> {
     public String tvdNumber;

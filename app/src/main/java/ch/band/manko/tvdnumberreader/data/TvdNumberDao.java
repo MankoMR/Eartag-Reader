@@ -1,4 +1,4 @@
-package ch.manko.usingocrinapps.googlemlkitwithcamerax.data;
+package ch.band.manko.tvdnumberreader.data;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -6,7 +6,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import ch.manko.usingocrinapps.googlemlkitwithcamerax.models.TvdNumber;
+import ch.band.manko.tvdnumberreader.models.TvdNumber;
 
 @Dao
 public interface TvdNumberDao {

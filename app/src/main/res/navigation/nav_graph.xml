@@ -3,31 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/MainFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="ch.manko.usingocrinapps.googlemlkitwithcamerax.fragments.TextListFragment"
-        android:label="@string/first_fragment_label"
+        android:id="@+id/MainFragment"
+        android:name="ch.band.manko.tvdnumberreader.fragments.TextListFragment"
+        android:label="@string/main_fragment_name"
         tools:layout="@layout/fragment_list">
 
         <action
             android:id="@+id/action_AddText"
-            app:destination="@id/SecondFragment" />
+            app:destination="@id/AddFragment" />
         <argument
             android:name="tvds"
+            android:defaultValue="@null"
             app:argType="string[]"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="ch.manko.usingocrinapps.googlemlkitwithcamerax.fragments.AnalysePhotoFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_analysePhoto">
+        android:id="@+id/AddFragment"
+        android:name="ch.band.manko.tvdnumberreader.fragments.AnalysePhotoFragment"
+        android:label="@string/add_fragment_name"
+        tools:layout="@layout/fragment_analyse_photo">
 
         <action
             android:id="@+id/action_ShowList"
-            app:destination="@id/FirstFragment" />
+            app:destination="@id/MainFragment" />
     </fragment>
 </navigation>

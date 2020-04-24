@@ -1,4 +1,4 @@
-package ch.manko.usingocrinapps.googlemlkitwithcamerax.models;
+package ch.band.manko.tvdnumberreader.models;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
