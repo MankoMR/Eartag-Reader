@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import ch.band.manko.tvdnumberreader.adapters.ProposedTvdListAdapter;
 import ch.band.manko.tvdnumberreader.data.TvdNumberRepository;
@@ -36,24 +38,31 @@ public class AnalysePhotoViewModel implements TextRecognizer.ResultListener, Pro
     @Override
     public void onSuccess(String text) {
         if(text != null){
-            boolean isduplicate = false;
-            ProposedTvdNumber newItem = new ProposedTvdNumber(text,1);
+            Future<Boolean> isRegistered = repository.containsTvdNumber(new TvdNumber(text));
+            try {
+                ProposedTvdNumber newItem = new ProposedTvdNumber(text, 1, isRegistered.get());
 
-            if(!proposedTvds.containsKey(text)){
-                executor.playSound();
-                proposedTvds.put(text,newItem);
-                Log.w(TAG,text);
-            }else{
-                Objects.requireNonNull(proposedTvds.get(text)).occurrence++;
+                if(!proposedTvds.containsKey(text)){
+                    executor.playSound();
+                    proposedTvds.put(text,newItem);
+                    Log.w(TAG,text);
+                }else{
+                    Objects.requireNonNull(proposedTvds.get(text)).occurrence++;
+                }
+                executor.updateProposedList(proposedTvdsAsList());
+
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
             }
-            executor.updateProposedList(proposedTvdsAsList());
         }
     }
     @Override
     public void onConfirm(ProposedTvdNumber tvd, int position) {
         ProposedTvdNumber removed = proposedTvds.remove(tvd.tvdNumber);
         assert removed != null;
-        repository.addTvdNumber(new TvdNumber(tvd.tvdNumber));
+        if(!tvd.isRegistered){
+            repository.addTvdNumber(new TvdNumber(tvd.tvdNumber));
+        }
         executor.updateProposedList(proposedTvdsAsList());
     }
     @Override

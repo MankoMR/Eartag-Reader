@@ -2,11 +2,15 @@ package ch.band.manko.tvdnumberreader.data;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Future;
+import java.util.concurrent.RunnableFuture;
 
+import ch.band.manko.tvdnumberreader.R;
 import ch.band.manko.tvdnumberreader.models.TvdNumber;
 
 /*
@@ -26,9 +30,14 @@ public class TvdNumberRepository {
         return  database.getAll();
     }
 
-    public void addTvdNumber(TvdNumber number){
+    public void addTvdNumber(@NonNull TvdNumber number){
         TvdNumberDatabase.databaseWriteExecutor.execute(()->{
             database.InsertAll(number);
+        });
+    }
+    public Future<Boolean> containsTvdNumber(@NonNull TvdNumber number){
+        return TvdNumberDatabase.databaseWriteExecutor.submit(()->{
+           return database.contains(number.tvdNumber);
         });
     }
 

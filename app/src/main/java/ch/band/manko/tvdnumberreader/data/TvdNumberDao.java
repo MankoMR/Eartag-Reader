@@ -21,6 +21,10 @@ public interface TvdNumberDao {
     @Insert
     void InsertAll(TvdNumber... numbers);
 
+    @Query("SELECT EXISTS (SELECT * FROM TvdNumber WHERE tvdNumber = :number)")
+    boolean contains(String number);
+
     @Query("DELETE FROM TvdNumber")
     void DeleteAll();
+
 }

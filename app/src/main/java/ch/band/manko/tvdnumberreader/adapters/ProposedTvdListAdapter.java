@@ -1,13 +1,20 @@
 package ch.band.manko.tvdnumberreader.adapters;
 
+import android.annotation.SuppressLint;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Locale;
+
+import ch.band.manko.tvdnumberreader.R;
 import ch.band.manko.tvdnumberreader.databinding.ProposedTvdItemBinding;
 import ch.band.manko.tvdnumberreader.models.ProposedTvdNumber;
 
@@ -65,10 +72,16 @@ public class ProposedTvdListAdapter extends ListAdapter<ProposedTvdNumber, Propo
                 listener.onRemove(tvd,position);
             });
         }
+        @SuppressLint("DefaultLocale")
         public void setContent(ProposedTvdNumber tvd, int position){
             this.tvd = tvd;
             binding.text.setText(tvd.tvdNumber);
-            binding.occurence.setText(tvd.occurrence +"");
+            binding.occurence.setText(String.format("%d",tvd.occurrence));
+            if (tvd.isRegistered){
+                int color = ResourcesCompat.getColor(binding.getRoot().getResources(),R.color.exist,null);
+                binding.resultItemCard.setCardBackgroundColor(color);
+                binding.confirm.setVisibility(View.INVISIBLE);
+            }
             this.position = position;
         }
     };
