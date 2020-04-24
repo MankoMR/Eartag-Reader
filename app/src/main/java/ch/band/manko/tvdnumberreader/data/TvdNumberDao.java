@@ -1,5 +1,6 @@
 package ch.band.manko.tvdnumberreader.data;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -8,11 +9,14 @@ import java.util.List;
 
 import ch.band.manko.tvdnumberreader.models.TvdNumber;
 
+/*
+ * https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#4
+ */
 @Dao
 public interface TvdNumberDao {
 
     @Query("SELECT * FROM TvdNumber")
-    List<TvdNumber> getAll();
+    LiveData<List<TvdNumber>> getAll();
 
     @Insert
     void InsertAll(TvdNumber... numbers);

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import ch.band.manko.tvdnumberreader.adapters.ProposedTvdListAdapter;
 import ch.band.manko.tvdnumberreader.data.TvdNumberRepository;
@@ -42,8 +43,8 @@ public class AnalysePhotoViewModel implements TextRecognizer.ResultListener, Pro
                 executor.playSound();
                 proposedTvds.put(text,newItem);
                 Log.w(TAG,text);
-            }else {
-                proposedTvds.get(text).occurrence++;
+            }else{
+                Objects.requireNonNull(proposedTvds.get(text)).occurrence++;
             }
             executor.updateProposedList(proposedTvdsAsList());
         }

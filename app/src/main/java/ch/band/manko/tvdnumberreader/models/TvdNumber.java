@@ -1,5 +1,6 @@
 package ch.band.manko.tvdnumberreader.models;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -8,10 +9,13 @@ import java.util.Objects;
 @Entity
 public class TvdNumber {
     @PrimaryKey
+    @NonNull
     public String tvdNumber;
-    public TvdNumber(String number){
-        tvdNumber = number;
+
+    public TvdNumber(@NonNull String tvdNumber){
+        this.tvdNumber = tvdNumber;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,49 +1,41 @@
 package ch.band.manko.tvdnumberreader.data;
 
 import android.content.Context;
-import androidx.room.Room;
+
+import androidx.lifecycle.LiveData;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Objects;
 
 import ch.band.manko.tvdnumberreader.models.TvdNumber;
 
-
+/*
+ * https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#7
+ */
 public class TvdNumberRepository {
-    private static TvdNumberDatabase database;
-    private static AtomicInteger referenceCounter = new AtomicInteger(0);
+    private  TvdNumberDao database;
     public TvdNumberRepository(Context context){
-        if(database == null){
-            database = Room.databaseBuilder(context,
-                    TvdNumberDatabase.class, "tvd_number_database")
-                    .enableMultiInstanceInvalidation().build();
-        }
-        if (!database.isOpen()) throw new AssertionError();
-
-        referenceCounter.incrementAndGet();
+        TvdNumberDatabase db = TvdNumberDatabase.getDatabase(context);
+        database = db.numberDao();
     }
     public String AllTvdNUmbersasCSV(){
         String s = "";
         return s;
     }
-    public List<TvdNumber> getAll(){
-        return  database.numberDao().getAll();
+    public LiveData<List<TvdNumber>> getAll(){
+        return  database.getAll();
     }
 
     public void addTvdNumber(TvdNumber number){
-        database.numberDao().InsertAll(number);
+        TvdNumberDatabase.databaseWriteExecutor.execute(()->{
+            database.InsertAll(number);
+        });
     }
 
     public boolean deleteAll(){
-        database.numberDao().DeleteAll();
-        return getAll().size() == 0 ? true : false;
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        if(referenceCounter.compareAndSet(0,0) && database.isOpen()){
-            database.close();
-        }
-        super.finalize();
+        TvdNumberDatabase.databaseWriteExecutor.execute(()->{
+            database.DeleteAll();
+        });
+        return Objects.requireNonNull(getAll().getValue()).size() == 0;
     }
 }

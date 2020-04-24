@@ -5,8 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -22,18 +24,23 @@ import ch.band.manko.tvdnumberreader.databinding.FragmentListBinding;
 import ch.band.manko.tvdnumberreader.models.TvdNumber;
 
 public class TextListFragment extends Fragment {
-    FragmentListBinding binding;
-    TvdNumberRepository repository;
+    private FragmentListBinding binding;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        repository = new TvdNumberRepository(getContext());
+        TvdNumberRepository repository = new TvdNumberRepository(getContext());
+        repository.getAll().observe(this, new Observer<List<TvdNumber>>() {
+            @Override
+            public void onChanged(List<TvdNumber> tvdNumbers) {
+                updateProposedList(tvdNumbers);
+            }
+        });
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentListBinding.inflate(inflater,container,false);
         binding.rvTextlist.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -45,8 +52,10 @@ public class TextListFragment extends Fragment {
         });
         return binding.getRoot();
     }
-    public void updateProposedList(List<TvdNumber> list){
+    private void updateProposedList(List<TvdNumber> list){
         ConfirmedTvdNumberListAdapter adapter = (ConfirmedTvdNumberListAdapter) binding.rvTextlist.getAdapter();
+        if(adapter == null)
+            return;
         adapter.submitList(list);
         adapter.notifyDataSetChanged();
     }
@@ -54,6 +63,5 @@ public class TextListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateProposedList(repository.getAll());
     }
 }
