@@ -80,6 +80,10 @@ public class ProposedTvdListAdapter extends ListAdapter<ProposedTvdNumber, Propo
                 int color = ResourcesCompat.getColor(binding.getRoot().getResources(),R.color.exist,null);
                 binding.resultItemCard.setCardBackgroundColor(color);
                 binding.confirm.setVisibility(View.INVISIBLE);
+            }else {
+                int color = ResourcesCompat.getColor(binding.getRoot().getResources(),R.color.design_default_color_background,null);
+                binding.resultItemCard.setCardBackgroundColor(color);
+                binding.confirm.setVisibility(View.VISIBLE);
             }
             this.position = position;
         }
