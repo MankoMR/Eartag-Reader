@@ -3,6 +3,7 @@ package ch.band.manko.tvdnumberreader.fragments;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import androidx.camera.core.CameraSelector;
 import androidx.camera.core.CameraXConfig;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.Preview;
+import androidx.camera.core.TorchState;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -37,6 +39,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import ch.band.manko.tvdnumberreader.AnalysePhotoViewModel;
+import ch.band.manko.tvdnumberreader.R;
 import ch.band.manko.tvdnumberreader.TextRecognizer;
 import ch.band.manko.tvdnumberreader.adapters.ProposedTvdListAdapter;
 import ch.band.manko.tvdnumberreader.databinding.FragmentAnalysePhotoBinding;
@@ -53,7 +56,7 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
 
     private Executor executor = Executors.newSingleThreadExecutor();
     private AnalysePhotoViewModel viewModel = new AnalysePhotoViewModel(this,getContext());
-
+    private Camera camera;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private FragmentAnalysePhotoBinding binding;
     private MediaPlayer mediaPlayer;
@@ -87,6 +90,7 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
                 // This should never be reached.
             }
         }, ContextCompat.getMainExecutor(getContext()));
+        binding.imageButton.setOnClickListener(this::toggleFlashLamp);
         return binding.getRoot();
     }
 
@@ -103,7 +107,8 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
 
     private void cameraSetup(@NonNull ProcessCameraProvider cameraProvider) {
         Preview preview = new Preview.Builder()
-                //.setTargetResolution(new Size(720,720))
+                //.setTargetResolution(new Size(720,720)))
+                .setTargetResolution(new Size(1080,1080))
                 .build();
         CameraSelector cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(CameraSelector.LENS_FACING_BACK)
@@ -116,7 +121,7 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
                 .build();
         analyzerUseCase.setAnalyzer(executor, new TextRecognizer(viewModel));
 
-        Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview,analyzerUseCase);
+        camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview,analyzerUseCase);
         preview.setSurfaceProvider(binding.tvCamStream.createSurfaceProvider(camera.getCameraInfo()));
     }
 
@@ -168,5 +173,20 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
     @Override
     public CameraXConfig getCameraXConfig() {
         return Camera2Config.defaultConfig();
+    }
+
+    private void toggleFlashLamp(View view) {
+        try {
+            int torchstate = camera.getCameraInfo().getTorchState().getValue();
+            if (torchstate == TorchState.OFF) {
+                binding.imageButton.setImageResource(R.drawable.ic_flash_off_black_24dp);
+                camera.getCameraControl().enableTorch(true);
+            } else if (torchstate == TorchState.ON) {
+                binding.imageButton.setImageResource(R.drawable.ic_flash_on_black_24dp);
+                camera.getCameraControl().enableTorch(false);
+            }
+        }catch (NullPointerException e){
+            Log.e(TAG,"Error unboxing torchstate",e);
+        }
     }
 }
