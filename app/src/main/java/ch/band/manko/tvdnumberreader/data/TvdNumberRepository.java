@@ -4,7 +4,9 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Future;
@@ -22,12 +24,15 @@ public class TvdNumberRepository {
         TvdNumberDatabase db = TvdNumberDatabase.getDatabase(context);
         database = db.numberDao();
     }
-    public String AllTvdNUmbersasCSV(Context context){
-        StringBuilder s = new StringBuilder(context.getResources().getString(R.string.tvdNumber) + ";\n");
-        for (TvdNumber number: Objects.requireNonNull(getAll().getValue())) {
-            s.append(number.tvdNumber).append(";\n");
-        }
-        return s.toString();
+    public Future<String> AllTvdNUmbersasCSV(Context context){
+        return TvdNumberDatabase.databaseWriteExecutor.submit(()->{
+            StringBuilder s = new StringBuilder(context.getResources().getString(R.string.tvdNumber) + "\n");
+            for (TvdNumber number: database.getAllAsync()) {
+                s.append(number.tvdNumber);
+                s.append("\n");
+            }
+            return s.toString();
+        });
     }
     public LiveData<List<TvdNumber>> getAll(){
         return  database.getAll();

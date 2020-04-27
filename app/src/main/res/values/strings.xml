@@ -9,6 +9,7 @@
     <string name="confirm_delete_list">Do you really want to delete the list?</string>
     <string name="confirm">Confirm</string>
     <string name="abort">Abort</string>
-    <string name="tvdnumberlists" translatable="false">lists/</string>
-    <string name="package_" translatable="false">ch.band.manko.tvdnumberreader</string>
+    <string name="storagelocation" translatable="false">lists</string>
+    <string name="authority" translatable="false">ch.band.manko.tvdnumberreader.fileprovider</string>
+    <string name="share_title">TVD-Number-List</string>
 </resources>

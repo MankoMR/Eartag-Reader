@@ -18,6 +18,9 @@ public interface TvdNumberDao {
     @Query("SELECT * FROM TvdNumber")
     LiveData<List<TvdNumber>> getAll();
 
+    @Query("SELECT * FROM TvdNumber")
+    List<TvdNumber> getAllAsync();
+
     @Insert
     void InsertAll(TvdNumber... numbers);
 
