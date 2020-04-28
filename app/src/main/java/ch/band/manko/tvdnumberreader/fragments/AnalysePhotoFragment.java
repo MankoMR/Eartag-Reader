@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.camera.camera2.Camera2Config;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.CameraX;
 import androidx.camera.core.CameraXConfig;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.Preview;
@@ -66,6 +67,13 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
         super.onCreate(savedInstanceState);
         mediaPlayer = MediaPlayer.create(getContext(), Settings.System.DEFAULT_NOTIFICATION_URI);
     }
+
+    @Override
+    public void onStop() {
+        CameraX.unbindAll();
+        super.onStop();
+    }
+
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,

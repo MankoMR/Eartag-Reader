@@ -72,9 +72,15 @@ public class TextRecognizer implements ImageAnalysis.Analyzer {
 
     @SuppressLint("UnsafeExperimentalUsageError")
     private void processImage(ImageProxy imageProxy,Rotation rotation){
-        FirebaseVisionImage image =
-                FirebaseVisionImage.fromMediaImage(Objects.requireNonNull(imageProxy.getImage()), rotation.rotation);
-
+        FirebaseVisionImage image;
+        try {
+            image =
+                    FirebaseVisionImage.fromMediaImage(Objects.requireNonNull(imageProxy.getImage()), rotation.rotation);
+        }catch (IllegalStateException e){
+            Log.d(TAG,"couldn't open image",e);
+            imageProxy.close();
+            return;
+        }
         // Pass image to an ML Kit Vision API
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
                 .getOnDeviceTextRecognizer();
