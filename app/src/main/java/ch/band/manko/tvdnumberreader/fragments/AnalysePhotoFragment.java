@@ -136,7 +136,6 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
     private void navigateBack(){
         NavDirections action = AnalysePhotoFragmentDirections.actionShowList();
         Navigation.findNavController(binding.getRoot()).navigate(action);
-
     }
 
     /**

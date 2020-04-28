@@ -3,8 +3,6 @@ package ch.band.manko.tvdnumberreader;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.common.util.concurrent.ListenableFuture;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,24 +38,22 @@ public class AnalysePhotoViewModel implements TextRecognizer.ResultListener, Pro
     @Override
     public void onSuccess(String text) {
         if(text != null){
-            ListenableFuture<Boolean> isRegistered = repository.containsTvdNumber(new TvdNumber(text));
-            isRegistered.addListener(() ->{
-                try {
-                    ProposedTvdNumber newItem = new ProposedTvdNumber(text, 1, isRegistered.get());
-                    if(!proposedTvds.containsKey(text)){
-                        //After some trying I found the sound annoying.
-                        //executor.playSound();
-                        proposedTvds.put(text,newItem);
-                        Log.w(TAG,text);
-                    }else{
-                        Objects.requireNonNull(proposedTvds.get(text)).occurrence++;
-                    }
-                    executor.updateProposedList(proposedTvdsAsList());
+            Future<Boolean> isRegistered = repository.containsTvdNumber(new TvdNumber(text));
+            try {
+                ProposedTvdNumber newItem = new ProposedTvdNumber(text, 1, isRegistered.get());
 
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
+                if(!proposedTvds.containsKey(text)){
+                    executor.playSound();
+                    proposedTvds.put(text,newItem);
+                    Log.w(TAG,text);
+                }else{
+                    Objects.requireNonNull(proposedTvds.get(text)).occurrence++;
                 }
-            },null);
+                executor.updateProposedList(proposedTvdsAsList());
+
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
     @Override

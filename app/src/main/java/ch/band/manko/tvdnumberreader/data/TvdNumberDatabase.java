@@ -12,7 +12,6 @@ import java.util.concurrent.Executors;
 import ch.band.manko.tvdnumberreader.models.TvdNumber;
 
 /*
- * Code is made following the recommendations from Google.
  * https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#6
  */
 @Database(entities = {TvdNumber.class}, version = 1)
