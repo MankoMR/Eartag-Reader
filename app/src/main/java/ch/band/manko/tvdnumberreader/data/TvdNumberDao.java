@@ -9,6 +9,9 @@ import java.util.List;
 
 import ch.band.manko.tvdnumberreader.models.TvdNumber;
 
+/**
+ * The interface Tvd number dao.
+ */
 /*
  * https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#4
  */
@@ -18,6 +21,9 @@ public interface TvdNumberDao {
     @Query("SELECT * FROM TvdNumber")
     LiveData<List<TvdNumber>> getAll();
 
+    /*
+     * Should only be used when immediate access to the list is necessary.
+     */
     @Query("SELECT * FROM TvdNumber")
     List<TvdNumber> getAllAsync();
 
