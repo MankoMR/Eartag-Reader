@@ -139,9 +139,9 @@ public class TextRecognizer implements ImageAnalysis.Analyzer {
         result += match.group();
         //return result;
 
-        result.replaceAll("\\n","");
-        result.replaceAll(" ","");
-        result.toUpperCase();
+        result = result.replaceAll("\\n","")
+                .replaceAll(" ","")
+                .toUpperCase();
         if(!numberPattern.matcher(result).find()){
             result = "CH"+result;
         }
