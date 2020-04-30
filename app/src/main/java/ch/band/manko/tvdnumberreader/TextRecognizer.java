@@ -22,7 +22,8 @@ import java.util.regex.Pattern;
 
 public class TextRecognizer implements ImageAnalysis.Analyzer {
     private static final String TAG = TextRecognizer.class.getSimpleName();
-    private static final Pattern pattern = Pattern.compile("(([A-Z]{2}\\s{0,3})?[0-9]{4}\\s{0,3}[0-9]{4})");
+    private static final Pattern numberPattern = Pattern.compile("(([a-zA-Z]{2}\\s{0,3})?[0-9]{4}\\s{0,3}[0-9]{4})");
+    private static final Pattern LangPattern = Pattern.compile("[A-Z]{2}");
 
     private AtomicInteger finishCounter = new AtomicInteger(0);
     private int parallelWorker = -1;
@@ -133,13 +134,15 @@ public class TextRecognizer implements ImageAnalysis.Analyzer {
     }
     private String filterText(FirebaseVisionText text){
         String result = "";
-    Matcher match = pattern.matcher(text.getText());
+    Matcher match = numberPattern.matcher(text.getText());
     if(match.find()){
         result += match.group();
         //return result;
 
         result.replaceAll("\\n","");
-        if(!result.toLowerCase().contains("ch")){
+        result.replaceAll(" ","");
+        result.toUpperCase();
+        if(!numberPattern.matcher(result).find()){
             result = "CH"+result;
         }
         return result;
