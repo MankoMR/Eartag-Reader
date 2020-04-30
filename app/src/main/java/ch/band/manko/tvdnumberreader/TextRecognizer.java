@@ -140,7 +140,7 @@ public class TextRecognizer implements ImageAnalysis.Analyzer {
         //return result;
 
         result = result.replaceAll("\\n","")
-                .replaceAll(" ","")
+                .replaceAll("\\s","")
                 .toUpperCase();
         if(!numberPattern.matcher(result).find()){
             result = "CH"+result;
