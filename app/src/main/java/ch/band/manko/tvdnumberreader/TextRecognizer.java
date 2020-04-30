@@ -137,7 +137,12 @@ public class TextRecognizer implements ImageAnalysis.Analyzer {
     if(match.find()){
         result += match.group();
         //return result;
-        return result.replaceAll("\\n","");
+
+        result.replaceAll("\\n","");
+        if(!result.toLowerCase().contains("ch")){
+            result = "CH"+result;
+        }
+        return result;
     }else
         return null;
     }
