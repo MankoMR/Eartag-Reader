@@ -3,6 +3,8 @@ package ch.band.manko.tvdnumberreader;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,7 +18,7 @@ import ch.band.manko.tvdnumberreader.data.TvdNumberRepository;
 import ch.band.manko.tvdnumberreader.models.ProposedTvdNumber;
 import ch.band.manko.tvdnumberreader.models.TvdNumber;
 
-public class AnalysePhotoViewModel implements TextRecognizer.ResultListener, ProposedTvdListAdapter.ItemInteractions {
+public class AnalysePhotoViewModel implements OnSuccessListener<String>, ProposedTvdListAdapter.ItemInteractions {
     private static final String TAG = AnalysePhotoViewModel.class.getSimpleName();
 
     private HashMap<String, ProposedTvdNumber> proposedTvds;

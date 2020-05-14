@@ -1,5 +1,6 @@
 package ch.band.manko.tvdnumberreader.fragments;
 
+import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -68,6 +69,7 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
         mediaPlayer = MediaPlayer.create(getContext(), Settings.System.DEFAULT_NOTIFICATION_URI);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void onStop() {
         CameraX.unbindAll();

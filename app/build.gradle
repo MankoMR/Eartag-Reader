@@ -60,6 +60,7 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:${camerax_version}"
     implementation 'androidx.camera:camera-view:1.0.0-alpha10'
 
+    //noinspection GradleDependency
     implementation 'com.google.firebase:firebase-ml-vision:24.0.2'
 
 

@@ -23,19 +23,15 @@ import java.util.regex.Pattern;
 public class TextRecognizer implements ImageAnalysis.Analyzer {
     private static final String TAG = TextRecognizer.class.getSimpleName();
     private static final Pattern numberPattern = Pattern.compile("(([a-zA-Z]{2}\\s{0,3})?[0-9]{4}\\s{0,3}[0-9]{4})");
-    private static final Pattern LangPattern = Pattern.compile("[A-Z]{2}");
+    private static final Pattern langPattern = Pattern.compile("[A-Z]{2}");
 
-    private AtomicInteger finishCounter = new AtomicInteger(0);
-    private int parallelWorker = -1;
     private Rotation currentRotation = Rotation._0;
-    private Rotation successfullRotation = Rotation._0;
     private boolean success = false;
-    private ResultListener listener;
+    private OnSuccessListener<String> listener;
 
-    public TextRecognizer(ResultListener resultListener){
+    public TextRecognizer(OnSuccessListener<String> resultListener){
         this.listener = resultListener;
     }
-
 
     @SuppressLint("UnsafeExperimentalUsageError")
     @Override
@@ -46,11 +42,9 @@ public class TextRecognizer implements ImageAnalysis.Analyzer {
             imageProxy.close();
             return;
         }
-        //int rotation = degreesToFirebaseRotation(imageProxy.getImageInfo().getRotationDegrees());
-        parallelWorker = 1;
         if(success){
-            successfullRotation = currentRotation;
-            processImage(imageProxy,successfullRotation);
+            Rotation successfullRotation = currentRotation;
+            processImage(imageProxy, successfullRotation);
         } else {
             switch (currentRotation){
                 case _0:
@@ -101,53 +95,21 @@ public class TextRecognizer implements ImageAnalysis.Analyzer {
     private void closeImageProxySimple(ImageProxy proxy){
         proxy.close();
     }
-    private void closeImageProxy(ImageProxy proxy){
-        if(parallelWorker < 0){
-            proxy.close();
-            throw new Error("Set parralel worker to parallel working Imageprocessors on Imageproxy");
-        }
-        int finished = finishCounter.incrementAndGet();
-        Log.d(TAG+" Finished","Finished:"+finished);
-        if (finishCounter.compareAndSet(4,0)){
-            Log.d(TAG+" Finished","Close Proxy");
-            proxy.close();
-        }
-    }
-
-    private int degreesToFirebaseRotation(int degrees) {
-        switch (degrees) {
-            case 0:
-                return FirebaseVisionImageMetadata.ROTATION_0;
-            case 90:
-                return FirebaseVisionImageMetadata.ROTATION_90;
-            case 180:
-                return FirebaseVisionImageMetadata.ROTATION_180;
-            case 270:
-                return FirebaseVisionImageMetadata.ROTATION_270;
-            default:
-                throw new IllegalArgumentException(
-                        "Rotation must be 0, 90, 180, or 270.");
-        }
-    }
-
-    public interface ResultListener extends OnSuccessListener<String>{
-    }
     private String filterText(FirebaseVisionText text){
         String result = "";
-    Matcher match = numberPattern.matcher(text.getText());
-    if(match.find()){
-        result += match.group();
-        //return result;
+        Matcher match = numberPattern.matcher(text.getText());
+        if(match.find()){
+            result += match.group();
 
-        result = result.replaceAll("\\n","")
-                .replaceAll("\\s","")
-                .toUpperCase();
-        if(!numberPattern.matcher(result).find()){
-            result = "CH"+result;
-        }
-        return result;
-    }else
-        return null;
+            result = result.replaceAll("\\n","")
+                    .replaceAll("\\s","")
+                    .toUpperCase();
+            if(!langPattern.matcher(result).find()){
+                result = "CH"+result;
+            }
+            return result.substring(0,2)+" "+result.substring(2,6)+" "+result.substring(6,10);
+        }else
+            return null;
     }
     public enum Rotation {
         _0(FirebaseVisionImageMetadata.ROTATION_0),
