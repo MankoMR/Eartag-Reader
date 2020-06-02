@@ -132,7 +132,7 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
         analyzerUseCase.setAnalyzer(executor, new TextRecognizer(viewModel));
 
         camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview,analyzerUseCase);
-        preview.setSurfaceProvider(binding.tvCamStream.createSurfaceProvider(camera.getCameraInfo()));
+        preview.setSurfaceProvider(binding.tvCamStream.createSurfaceProvider());
     }
 
     private void navigateBack(){
