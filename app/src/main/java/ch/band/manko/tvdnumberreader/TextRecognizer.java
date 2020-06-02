@@ -20,8 +20,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Documentation: https://developer.android.com/training/camerax/analyze
- * Tutorial: https://codelabs.developers.google.com/codelabs/camerax-getting-started/#0
+ * @See <a href="https://developer.android.com/training/camerax/analyze">Documentation</a>
+ * @See <a href="https://codelabs.developers.google.com/codelabs/camerax-getting-started/#0">Tutorial</a>
  */
 public class TextRecognizer implements ImageAnalysis.Analyzer {
     private static final String TAG = TextRecognizer.class.getSimpleName();
@@ -90,10 +90,10 @@ public class TextRecognizer implements ImageAnalysis.Analyzer {
      * learning. If it finds text matching the @numberPattern it formats the tvd-number and calls
      * listener.onSuccess(result).
      *
-     * Overview: https://developers.google.com/ml-kit/vision/
-     * Documentation: https://firebase.google.com/docs/ml-kit/android/recognize-text
-     * Tutorial: https://codelabs.developers.google.com/codelabs/mlkit-android/#0
-     *
+     * @See <a href="https://developers.google.com/ml-kit/vision/">Overview</a>
+     * @See <a href="https://firebase.google.com/docs/ml-kit/android/recognize-text">Documentation</a>
+     * @See <a href="https://codelabs.developers.google.com/codelabs/mlkit-android/#0">Tutorial</a>
+     * 
      * @param imageProxy: The image which should be analyzed.
      * @param rotation: The rotation the image should be interpreted in. (The model can't recognize
      *                  text which isn't approximately parallel to a horizontal line. It also doesn't

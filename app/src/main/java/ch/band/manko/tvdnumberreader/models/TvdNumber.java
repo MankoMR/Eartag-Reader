@@ -12,8 +12,8 @@ import java.util.Objects;
  *
  * This is a class just for storing related information, therefore all fields are public for convenience
  *
- * Overview / Documentation: https://developer.android.com/topic/libraries/architecture/room
- * Tutorial: https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#4
+ * @See <a href="https://developer.android.com/topic/libraries/architecture/room">Overview / Documentation</a>
+ * @See <a href="https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#4">Tutorial</a>
  */
 @Entity
 public class TvdNumber {
