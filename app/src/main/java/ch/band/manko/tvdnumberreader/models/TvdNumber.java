@@ -6,6 +6,15 @@ import androidx.room.PrimaryKey;
 
 import java.util.Objects;
 
+/**
+ * This class is a blueprint for the database. Changing this class modifies the table representing this
+ * type created in SqLite through Room.
+ *
+ * This is a class just for storing related information, therefore all fields are public for convenience
+ *
+ * Overview / Documentation: https://developer.android.com/topic/libraries/architecture/room
+ * Tutorial: https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#4
+ */
 @Entity
 public class TvdNumber {
     @PrimaryKey
