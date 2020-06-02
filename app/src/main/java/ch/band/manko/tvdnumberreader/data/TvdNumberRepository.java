@@ -20,7 +20,7 @@ public class TvdNumberRepository {
         TvdNumberDatabase db = TvdNumberDatabase.getDatabase(context);
         database = db.numberDao();
     }
-    public Future<String> AllTvdNUmbersasCSV(Context context){
+    public Future<String> allTvdNUmbersAsCSV(Context context){
         return TvdNumberDatabase.databaseWriteExecutor.submit(()->{
             StringBuilder s = new StringBuilder(context.getResources().getString(R.string.tvdNumber) + "\n");
             for (TvdNumber number: database.getAllAsync()) {
@@ -36,7 +36,7 @@ public class TvdNumberRepository {
 
     public void addTvdNumber(@NonNull TvdNumber number){
         TvdNumberDatabase.databaseWriteExecutor.execute(()->{
-            database.InsertAll(number);
+            database.insertAll(number);
         });
     }
     public Future<Boolean> containsTvdNumber(@NonNull TvdNumber number){
@@ -47,7 +47,7 @@ public class TvdNumberRepository {
 
     public void deleteAll(){
         TvdNumberDatabase.databaseWriteExecutor.execute(()->{
-            database.DeleteAll();
+            database.deleteAll();
         });
     }
 }

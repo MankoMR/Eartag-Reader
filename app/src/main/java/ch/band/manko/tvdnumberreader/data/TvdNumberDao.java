@@ -22,12 +22,12 @@ public interface TvdNumberDao {
     List<TvdNumber> getAllAsync();
 
     @Insert
-    void InsertAll(TvdNumber... numbers);
+    void insertAll(TvdNumber... numbers);
 
     @Query("SELECT EXISTS (SELECT * FROM TvdNumber WHERE tvdNumber = :number)")
     boolean contains(String number);
 
     @Query("DELETE FROM TvdNumber")
-    void DeleteAll();
+    void deleteAll();
 
 }

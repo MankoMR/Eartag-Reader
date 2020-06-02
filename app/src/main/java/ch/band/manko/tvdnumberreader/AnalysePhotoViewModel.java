@@ -18,28 +18,56 @@ import ch.band.manko.tvdnumberreader.data.TvdNumberRepository;
 import ch.band.manko.tvdnumberreader.models.ProposedTvdNumber;
 import ch.band.manko.tvdnumberreader.models.TvdNumber;
 
+/**
+ * The AnalysePhotoViewModel got created to separate the business Logic from UI management logic since
+ * the AnalysePhotoFragment class got a little to big.
+ *
+ * This class implements OnSuccessListener<String> because it needs to listen for tvd-number recognized
+ * from the Camera. It also needs to implement ProposedTvdListAdapter.ItemInteractions to react to
+ * interactions with ProposedTvdNumbers.
+ *
+ */
 public class AnalysePhotoViewModel implements OnSuccessListener<String>, ProposedTvdListAdapter.ItemInteractions {
     private static final String TAG = AnalysePhotoViewModel.class.getSimpleName();
 
     private HashMap<String, ProposedTvdNumber> proposedTvds;
-    private CommandExecutor executor;
+    private ICommandExecutor executor;
     private TvdNumberRepository repository;
 
-    public AnalysePhotoViewModel(CommandExecutor commandExecutor, Context context)
+    /**
+     * Creates a new AnalysePhotoViewModel
+     * @param commandExecutor is an object, which implements the commands defined in the interface.
+     * @param context the AppContext (to create a TvdNumberRepository)
+     */
+    public AnalysePhotoViewModel(ICommandExecutor commandExecutor, Context context)
     {
         proposedTvds =  new HashMap<>();
         executor = commandExecutor;
         repository = new TvdNumberRepository(context);
     }
 
+    /**
+     * Helperfunction to convert the @Link{#proposedTvds} to a List.
+     * It also sorts the list with the interface Comparable<ProposedTvdNumber> implemented on ProposedTvdNumber.
+     * @return a sorted list of the current ProposedTvdNumbers.
+     */
     private List<ProposedTvdNumber> proposedTvdsAsList(){
         ArrayList<ProposedTvdNumber> list = new ArrayList<>(proposedTvds.values());
         Collections.sort(list);
         return list;
     }
+
+    /**
+     * If TextRecognizer recognized a new tvd-number it checks whether the number is already on the list
+     * and if the proposal already exists. if it exists the occurrence-counter gets 1 added or a new
+     * ProposedTvdNumber gets created. If necessary, the UI gets an update.
+     *
+     * @param text
+     */
     @Override
     public void onSuccess(String text) {
         if(text != null){
+
             Future<Boolean> isRegistered = repository.containsTvdNumber(new TvdNumber(text));
             try {
                 ProposedTvdNumber newItem = new ProposedTvdNumber(text, 1, isRegistered.get());
@@ -58,6 +86,13 @@ public class AnalysePhotoViewModel implements OnSuccessListener<String>, Propose
             }
         }
     }
+
+    /**
+     * Gets called when the user tips the check mark on a ProposedTvdNumber
+     *
+     * @param tvd the ProposedTvdNumber the user tipped.
+     * @param position of the ProposedTvdNumber on the screen (not needed, refactor?)
+     */
     @Override
     public void onConfirm(ProposedTvdNumber tvd, int position) {
         ProposedTvdNumber removed = proposedTvds.remove(tvd.tvdNumber);
@@ -67,6 +102,12 @@ public class AnalysePhotoViewModel implements OnSuccessListener<String>, Propose
         }
         executor.updateProposedList(proposedTvdsAsList());
     }
+
+    /**
+     * Gets called when the user tips the x mark on a ProposedTvdNumber
+     * @param tvd the ProposedTvdNumber the user tipped.
+     * @param position of the ProposedTvdNumber on the screen (not needed, refactor?)
+     */
     @Override
     public void onRemove(ProposedTvdNumber tvd, int position) {
         ProposedTvdNumber removed = proposedTvds.remove(tvd.tvdNumber);
@@ -74,7 +115,7 @@ public class AnalysePhotoViewModel implements OnSuccessListener<String>, Propose
         executor.updateProposedList(proposedTvdsAsList());
     }
 
-    public interface CommandExecutor{
+    public interface ICommandExecutor {
         void playSound();
         void updateProposedList(List<ProposedTvdNumber> list);
     }

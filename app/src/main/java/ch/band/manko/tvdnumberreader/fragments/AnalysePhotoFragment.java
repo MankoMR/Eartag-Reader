@@ -47,7 +47,7 @@ import ch.band.manko.tvdnumberreader.adapters.ProposedTvdListAdapter;
 import ch.band.manko.tvdnumberreader.databinding.FragmentAnalysePhotoBinding;
 import ch.band.manko.tvdnumberreader.models.ProposedTvdNumber;
 
-public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Provider, AnalysePhotoViewModel.CommandExecutor {
+public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Provider, AnalysePhotoViewModel.ICommandExecutor {
     private static final String TAG = AnalysePhotoFragment.class.getSimpleName();
     // This is an arbitrary number we are using to keep track of the permission
     // request. Where an app has multiple context for requesting permission,

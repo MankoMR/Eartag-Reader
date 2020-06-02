@@ -10,7 +10,6 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 
 import android.util.Log;
@@ -18,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -52,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
         repository = new TvdNumberRepository(getApplicationContext());
 
     }
-
+    /**
+     * @See <a href="https://developer.android.com/training/appbar">Appbar</a>
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -75,6 +75,14 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Gets called when item in menu of the app gets tipped.
+     *
+     * @See <a href="https://developer.android.com/training/appbar">Appbar</a>
+     *
+     * @param item: the Item that got tipped.
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -119,6 +127,9 @@ public class MainActivity extends AppCompatActivity {
      *  The Location of the file enables the Fileprovider to grant temporary access to the file to
      *  other apps.
      *
+     * @See <a href="https://developer.android.com/reference/androidx/core/content/FileProvider">File Provider</a>
+     * @See <a href="https://developer.android.com/training/secure-file-sharing">Sharing Files</a>
+     *
      * @param name: The name the file should have.
      * @param repository: The TvdNumberRepository from which the content for the file can be accessed.
      * @return an Uri to share with other Apps, pointing to the location of the file.
@@ -137,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         csv.createNewFile();
         //writes the String from AllTvdNUmbersasCSV to the file
         FileWriter writer = new FileWriter(csv);
-        writer.append(repository.AllTvdNUmbersasCSV(getApplicationContext()).get());
+        writer.append(repository.allTvdNUmbersAsCSV(getApplicationContext()).get());
         writer.close();
         //get the Uri to the file from the fileprovider with the authority described in the manifest
         //(res/values/strings/authority should be the string describing the authority in the manifest
@@ -150,6 +161,9 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Shares to Uri to possibly open the file specified in Uri with an compatible app.
      * Therefore it grants
+     *
+     * @See <a href="https://developer.android.com/guide/components/intents-filters">Intents</a>
+     * @See <a href="https://developer.android.com/training/secure-file-sharing">Sharing Files</a>
      *
      * @param uri: The Uri which points to a file.
      * @param mimetype: The type of content of the file.
@@ -167,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
      * Builds the AlertDialog to show when the user wants to delete the list.
      * This Dialog is necessary to provide the user with the opportunity to consider aborting the deletion
      * in case he accidentally tipped or other reasons.
-     * 
+     *
      * @param ok: An OnClickListener which will be executed the user clicks on OK on the AlertDialog.
      * @return the finished AlertDialog.
      */
