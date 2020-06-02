@@ -1,5 +1,6 @@
 package ch.band.manko.tvdnumberreader;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -55,8 +56,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        //it also needs to be inflated before it can be used
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        //Menu needs to be inflated before it can get called
+        //with the following statement it observes the tvd-number list and if the list is empty it hides the
+        //share and delete button, since there nothing to share or delete.
         repository.getAll().observe(this, new Observer<List<TvdNumber>>() {
             @Override
             public void onChanged(List<TvdNumber> tvdNumbers) {
@@ -80,11 +83,14 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.share) {
+            //creates file name.
             Date now = Calendar.getInstance().getTime();
+            @SuppressLint("SimpleDateFormat")
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
             format.setTimeZone(Calendar.getInstance().getTimeZone());
             String name = getString(R.string.share_title)+"_"+ format.format(now);
-            Log.d(TAG,name);
+            //Log.d(TAG,name);
+            //create and share file
             try {
                 Uri file = createFile(name,repository);
                 share(file,"text/csv");
@@ -94,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.clear_list) {
+            //ask user for confirmation before deleting the tvd-number list
             AlertDialog dialog = buildDialog(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -107,29 +114,63 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     *  Creates a .csv file at the position specified in res/values/strings/storagelocation.
+     *  The Location of the file enables the Fileprovider to grant temporary access to the file to
+     *  other apps.
+     *
+     * @param name: The name the file should have.
+     * @param repository: The TvdNumberRepository from which the content for the file can be accessed.
+     * @return an Uri to share with other Apps, pointing to the location of the file.
+     *
+     * @throws IOException
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
     private Uri createFile(String name, TvdNumberRepository repository) throws IOException, ExecutionException, InterruptedException {
+        //gets the storagelocation to store the file and creates the folders if necessary.
         File path = new File(getFilesDir(),getString(R.string.storagelocation));
         path.mkdirs();
+        //creates the file
         File csv = new File(path,name+".csv");
         Log.d(TAG,"Filepath: "+csv.getAbsolutePath());
         csv.createNewFile();
-        //FileOutputStream stream = getBaseContext().openFileOutput(getFilesDir().getName() + getString(R.string.storagelocation), MODE_PRIVATE);
+        //writes the String from AllTvdNUmbersasCSV to the file
         FileWriter writer = new FileWriter(csv);
         writer.append(repository.AllTvdNUmbersasCSV(getApplicationContext()).get());
         writer.close();
+        //get the Uri to the file from the fileprovider with the authority described in the manifest
+        //(res/values/strings/authority should be the string describing the authority in the manifest
+        // the value needs to match the value in the manifest.)
         Uri uri = getUriForFile(getApplicationContext(), getText(R.string.authority).toString(), csv);
         Log.d(TAG,"Uri: "+uri.toString());
         return uri;
     }
 
+    /**
+     * Shares to Uri to possibly open the file specified in Uri with an compatible app.
+     * Therefore it grants
+     *
+     * @param uri: The Uri which points to a file.
+     * @param mimetype: The type of content of the file.
+     */
     private void share(Uri uri,String mimetype){
         Intent toshare = new Intent(Intent.ACTION_SEND);
+        //Grants temporary read permission
         toshare.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         toshare.putExtra(Intent.EXTRA_STREAM,uri.normalizeScheme());
         toshare.setType(mimetype);
         startActivity(Intent.createChooser(toshare,getString(R.string.share_title)));
     }
 
+    /**
+     * Builds the AlertDialog to show when the user wants to delete the list.
+     * This Dialog is necessary to provide the user with the opportunity to consider aborting the deletion
+     * in case he accidentally tipped or other reasons.
+     * 
+     * @param ok: An OnClickListener which will be executed the user clicks on OK on the AlertDialog.
+     * @return the finished AlertDialog.
+     */
     private AlertDialog buildDialog(DialogInterface.OnClickListener ok){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage(R.string.confirm_delete_list);
