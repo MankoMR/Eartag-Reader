@@ -1,6 +1,7 @@
 package ch.band.manko.tvdnumberreader.data;
 
 import android.content.Context;
+import android.telecom.StatusHints;
 
 import androidx.room.Database;
 import androidx.room.Room;
@@ -14,7 +15,7 @@ import ch.band.manko.tvdnumberreader.models.TvdNumber;
 /*
  * https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#6
  */
-@Database(entities = {TvdNumber.class}, version = 1)
+@Database(entities = {TvdNumber.class}, version = 1, exportSchema = false)
 public abstract class TvdNumberDatabase extends RoomDatabase {
     public abstract TvdNumberDao numberDao();
 
