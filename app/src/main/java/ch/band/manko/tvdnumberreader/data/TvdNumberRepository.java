@@ -4,13 +4,9 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.Future;
-import java.util.concurrent.RunnableFuture;
 
 import ch.band.manko.tvdnumberreader.R;
 import ch.band.manko.tvdnumberreader.models.TvdNumber;
