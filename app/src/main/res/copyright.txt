@@ -1,4 +1,4 @@
-The Icons are available from Android Studio under the Apache license:
+The Icons in the drawable Folder are available from Android Studio under the Apache license:
 
 
                                  Apache License
