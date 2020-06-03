@@ -12,4 +12,5 @@
     <string name="storagelocation" translatable="false">lists</string>
     <string name="authority" translatable="false">ch.band.manko.tvdnumberreader.fileprovider</string>
     <string name="share_title">TVD-Number-List</string>
+    <string name="no_camera_permission">No permission to access camera.</string>
 </resources>

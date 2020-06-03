@@ -49,12 +49,6 @@ import ch.band.manko.tvdnumberreader.models.ProposedTvdNumber;
 
 public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Provider, AnalysePhotoViewModel.ICommandExecutor {
     private static final String TAG = AnalysePhotoFragment.class.getSimpleName();
-    // This is an arbitrary number we are using to keep track of the permission
-    // request. Where an app has multiple context for requesting permission,
-    // this can help differentiate the different contexts.
-    private static final int REQUEST_CODE_PERMISSIONS = 10;
-    // This is an array of all the permission specified in the manifest.
-    private static final String[] REQUIRED_PERMISSIONS = {Manifest.permission.CAMERA};
 
     private Executor executor = Executors.newSingleThreadExecutor();
     private AnalysePhotoViewModel viewModel = new AnalysePhotoViewModel(this,getContext());
@@ -89,12 +83,7 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
         cameraProviderFuture.addListener(() -> {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                if (ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.CAMERA) !=
-                        PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this.getActivity(), new String[] {Manifest.permission.CAMERA},
-                            REQUEST_CODE_PERMISSIONS); }
-                else
-                    cameraSetup(cameraProvider);
+                cameraSetup(cameraProvider);
             } catch (ExecutionException | InterruptedException e) {
                 // No errors need to be handled for this Future.
                 // This should never be reached.
@@ -140,44 +129,7 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
         Navigation.findNavController(binding.getRoot()).navigate(action);
     }
 
-    /**
-     * Check if all permission specified in the manifest have been granted
-     */
-    private boolean allPermissionsGranted(){
-        boolean granted = true;
-        for (String permission:REQUIRED_PERMISSIONS) {
-            granted &= ContextCompat.checkSelfPermission(getContext(),permission) == PackageManager.PERMISSION_GRANTED;
-        }
-        return granted;
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                ProcessCameraProvider provider = null;
-                try {
-                    provider = cameraProviderFuture.get();
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if(provider == null)
-                {
-                    Toast.makeText(this.getContext(),
-                            "Camera could not be provided.",
-                            Toast.LENGTH_SHORT).show();
-                    navigateBack();
-                    return;
-                }
-                cameraSetup(provider);
-            } else {
-                Toast.makeText(this.getContext(),
-                        "Permissions not granted by the user.",
-                        Toast.LENGTH_SHORT).show();
-                navigateBack();
-            }
-        }
-    }
+
 
     @NonNull
     @Override
