@@ -78,10 +78,8 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
         super.onPause();
     }
 
-    @SuppressLint("RestrictedApi")
     @Override
     public void onStop() {
-        CameraX.unbindAll();
         releaseMediaplayers();
         super.onStop();
     }
