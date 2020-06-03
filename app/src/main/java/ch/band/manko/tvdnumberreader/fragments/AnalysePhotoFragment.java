@@ -49,6 +49,7 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
     private FragmentAnalysePhotoBinding binding;
     private AnalysePhotoViewModel viewModel = new AnalysePhotoViewModel(this,getContext());
     private Camera camera;
+    private ProcessCameraProvider cameraProvider;
     private MediaPlayer newEntityPlayer;
     private MediaPlayer onAddPlayer;
 
@@ -111,7 +112,7 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
         ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(getContext());
         cameraProviderFuture.addListener(() -> {
             try {
-                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                cameraProvider = cameraProviderFuture.get();
                 cameraSetup(cameraProvider);
             } catch (ExecutionException | InterruptedException e) {
                 // No errors need to be handled for this Future.
@@ -151,6 +152,7 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build();
         analyzerUseCase.setAnalyzer(Executors.newSingleThreadExecutor(), new TextRecognizer(viewModel));
+        cameraProvider.unbindAll();
 
         //Gets a camera object to control the flashlight and binds the lifecyle of the objects to
         //the lifetime this fragment
@@ -206,5 +208,10 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
             adapter.submitList(list);
             adapter.notifyDataSetChanged();
         }
+    }
+    @Override
+    public void onDestroy() {
+        cameraProvider.unbindAll();
+        super.onDestroy();
     }
 }
