@@ -42,21 +42,33 @@ import ch.band.manko.tvdnumberreader.adapters.ProposedTvdListAdapter;
 import ch.band.manko.tvdnumberreader.databinding.FragmentAnalysePhotoBinding;
 import ch.band.manko.tvdnumberreader.models.ProposedTvdNumber;
 
-public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Provider, AnalysePhotoViewModel.ICommandExecutor {
+public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewModel.ICommandExecutor {
     private static final String TAG = AnalysePhotoFragment.class.getSimpleName();
 
-    private Executor executor = Executors.newSingleThreadExecutor();
+    private FragmentAnalysePhotoBinding binding;
     private AnalysePhotoViewModel viewModel = new AnalysePhotoViewModel(this,getContext());
     private Camera camera;
-    private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
-    private FragmentAnalysePhotoBinding binding;
     private MediaPlayer newEntityPlayer;
     private MediaPlayer onAddPlayer;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    /**
+     * Releases resources associated with these MediaPlayer objects.
+     * It is considered good practice to call this method when you're
+     * done using the MediaPlayers. In particular, whenever an Activity
+     * of an application is paused (its onPause() method is called),
+     * or stopped (its onStop() method is called), this method should be
+     * invoked to release the MediaPlayer objects, unless the application
+     * has a special need to keep the object around. In addition to
+     * unnecessary resources (such as memory and instances of codecs)
+     * being held, failure to call this method immediately if
+     * MediaPlayer objects are no longer needed may also lead to
+     * continuous battery consumption for mobile devices, and playback
+     * failure for other applications if no multiple instances of the
+     * same codec are supported on a device. Even if multiple instances
+     * of the same codec are supported, some performance degradation
+     * may be expected when unnecessary multiple instances are used
+     * at the same time.
+     */
     private void releaseMediaplayers(){
         onAddPlayer.release();
         newEntityPlayer.release();
@@ -83,7 +95,6 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
         releaseMediaplayers();
         super.onStop();
     }
-
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -93,7 +104,7 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
         binding.fabConfirm.setOnClickListener(view -> navigateBack());
         binding.proposalList.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.proposalList.setAdapter(new ProposedTvdListAdapter(viewModel));
-        cameraProviderFuture = ProcessCameraProvider.getInstance(getContext());
+        ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(getContext());
         cameraProviderFuture.addListener(() -> {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
@@ -106,22 +117,9 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
         binding.imageButton.setOnClickListener(this::toggleFlashLamp);
         return binding.getRoot();
     }
-
-    public void playSoundTextRecognized() {
-        newEntityPlayer.seekTo(0);
-        newEntityPlayer.start();
-    }
-
-    @Override
-    public void playSoundTouch() {
-        onAddPlayer.seekTo(0);
-        onAddPlayer.start();
-    }
-
-    public void updateProposedList(List<ProposedTvdNumber> list){
-        ProposedTvdListAdapter adapter = (ProposedTvdListAdapter) binding.proposalList.getAdapter();
-        adapter.submitList(list);
-        adapter.notifyDataSetChanged();
+    private void navigateBack(){
+        NavDirections action = AnalysePhotoFragmentDirections.actionShowList();
+        Navigation.findNavController(binding.getRoot()).navigate(action);
     }
 
     private void cameraSetup(@NonNull ProcessCameraProvider cameraProvider) {
@@ -138,25 +136,11 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
                 .setTargetResolution(new Size(1080,1080))
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build();
-        analyzerUseCase.setAnalyzer(executor, new TextRecognizer(viewModel));
+        analyzerUseCase.setAnalyzer(Executors.newSingleThreadExecutor(), new TextRecognizer(viewModel));
 
         camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview,analyzerUseCase);
         preview.setSurfaceProvider(binding.tvCamStream.createSurfaceProvider());
     }
-
-    private void navigateBack(){
-        NavDirections action = AnalysePhotoFragmentDirections.actionShowList();
-        Navigation.findNavController(binding.getRoot()).navigate(action);
-    }
-
-
-
-    @NonNull
-    @Override
-    public CameraXConfig getCameraXConfig() {
-        return Camera2Config.defaultConfig();
-    }
-
     private void toggleFlashLamp(View view) {
         try {
             int torchstate = camera.getCameraInfo().getTorchState().getValue();
@@ -171,5 +155,21 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
         }catch (NullPointerException e){
             Log.e(TAG,"Error unboxing torchstate",e);
         }
+    }
+
+    public void playSoundTextRecognized() {
+        newEntityPlayer.seekTo(0);
+        newEntityPlayer.start();
+    }
+
+    public void playSoundTouch() {
+        onAddPlayer.seekTo(0);
+        onAddPlayer.start();
+    }
+
+    public void updateProposedList(List<ProposedTvdNumber> list){
+        ProposedTvdListAdapter adapter = (ProposedTvdListAdapter) binding.proposalList.getAdapter();
+        adapter.submitList(list);
+        adapter.notifyDataSetChanged();
     }
 }
