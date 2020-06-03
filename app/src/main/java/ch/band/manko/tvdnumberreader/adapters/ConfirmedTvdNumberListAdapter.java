@@ -11,6 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import ch.band.manko.tvdnumberreader.databinding.ConfirmedTvdnumberItemBinding;
 import ch.band.manko.tvdnumberreader.models.TvdNumber;
 
+/**
+ * @See <a href="https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter">ListAdapter</a>
+ * @See <a href="https://developer.android.com/guide/topics/ui/layout/recyclerview">Recyclerview</a>
+ */
 public class ConfirmedTvdNumberListAdapter extends ListAdapter<TvdNumber, ConfirmedTvdNumberListAdapter.ConfirmedTvdNumberItem> {
     private static final DiffUtil.ItemCallback<TvdNumber> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<TvdNumber>() {

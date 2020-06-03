@@ -17,6 +17,10 @@ import ch.band.manko.tvdnumberreader.R;
 import ch.band.manko.tvdnumberreader.databinding.ProposedTvdItemBinding;
 import ch.band.manko.tvdnumberreader.models.ProposedTvdNumber;
 
+/**
+ * @See <a href="https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter">ListAdapter</a>
+ * @See <a href="https://developer.android.com/guide/topics/ui/layout/recyclerview">Recyclerview</a>
+ */
 public class ProposedTvdListAdapter extends ListAdapter<ProposedTvdNumber, ProposedTvdListAdapter.ProposedTvdItem> {
 
     private static final DiffUtil.ItemCallback<ProposedTvdNumber> DIFF_CALLBACK =
