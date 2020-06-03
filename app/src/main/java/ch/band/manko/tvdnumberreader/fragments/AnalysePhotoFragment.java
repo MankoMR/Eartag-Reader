@@ -3,15 +3,11 @@ package ch.band.manko.tvdnumberreader.fragments;
 import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.util.Size;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.camera.camera2.Camera2Config;
@@ -23,7 +19,6 @@ import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.Preview;
 import androidx.camera.core.TorchState;
 import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import java.util.List;
@@ -55,18 +50,39 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
     private Camera camera;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private FragmentAnalysePhotoBinding binding;
-    private MediaPlayer mediaPlayer;
+    private MediaPlayer newEntityPlayer;
+    private MediaPlayer onAddPlayer;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mediaPlayer = MediaPlayer.create(getContext(), R.raw.ui_unlock);
+    }
+    private void releaseMediaplayers(){
+        onAddPlayer.release();
+        newEntityPlayer.release();
+    }
+    private void instantiateMediaPlayers(){
+        newEntityPlayer = MediaPlayer.create(getContext(), R.raw.ui_unlock);
+        onAddPlayer = MediaPlayer.create(getContext(), R.raw.ui_tap_variant_04);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        instantiateMediaPlayers();
+    }
+
+    @Override
+    public void onPause() {
+        releaseMediaplayers();
+        super.onPause();
     }
 
     @SuppressLint("RestrictedApi")
     @Override
     public void onStop() {
         CameraX.unbindAll();
+        releaseMediaplayers();
         super.onStop();
     }
 
@@ -93,9 +109,15 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
         return binding.getRoot();
     }
 
-    public void playSound() {
-        mediaPlayer.seekTo(0);
-        mediaPlayer.start();
+    public void playSoundTextRecognized() {
+        newEntityPlayer.seekTo(0);
+        newEntityPlayer.start();
+    }
+
+    @Override
+    public void playSoundTouch() {
+        onAddPlayer.seekTo(0);
+        onAddPlayer.start();
     }
 
     public void updateProposedList(List<ProposedTvdNumber> list){
@@ -147,6 +169,7 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
                 binding.imageButton.setImageResource(R.drawable.ic_flash_on_black_24dp);
                 camera.getCameraControl().enableTorch(false);
             }
+            playSoundTextRecognized();
         }catch (NullPointerException e){
             Log.e(TAG,"Error unboxing torchstate",e);
         }

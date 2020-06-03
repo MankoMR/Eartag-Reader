@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         toshare.setType(mimetype);
         startActivity(Intent.createChooser(toshare,getString(R.string.share_title)));
     }
-    
+
     /**
      * Builds the AlertDialog to show when the user wants to delete the list.
      * This Dialog is necessary to provide the user with the opportunity to consider aborting the deletion

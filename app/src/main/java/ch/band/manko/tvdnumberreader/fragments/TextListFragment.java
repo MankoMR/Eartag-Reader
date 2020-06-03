@@ -69,9 +69,8 @@ public class TextListFragment extends Fragment implements ActivityCompat.OnReque
 
         binding.fabAdd.setOnClickListener(view->{
             //Ask for Permission to use the camera if permission isn't already granted.
-            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) !=
-                    PackageManager.PERMISSION_GRANTED) {
-                this.requestPermissions(new String[] {Manifest.permission.CAMERA},
+            if (!allPermissionsGranted()) {
+                this.requestPermissions(REQUIRED_PERMISSIONS,
                         REQUEST_CODE_PERMISSIONS); }
             else {
                 navigateToAnalysePhotoFragment();

@@ -73,7 +73,7 @@ public class AnalysePhotoViewModel implements OnSuccessListener<String>, Propose
                 ProposedTvdNumber newItem = new ProposedTvdNumber(text, 1, isRegistered.get());
 
                 if(!proposedTvds.containsKey(text)){
-                    executor.playSound();
+                    executor.playSoundTextRecognized();
                     proposedTvds.put(text,newItem);
                     Log.w(TAG,text);
                 }else{
@@ -99,6 +99,7 @@ public class AnalysePhotoViewModel implements OnSuccessListener<String>, Propose
         assert removed != null;
         if(!tvd.isRegistered){
             repository.addTvdNumber(new TvdNumber(tvd.tvdNumber));
+            executor.playSoundTouch();
         }
         executor.updateProposedList(proposedTvdsAsList());
     }
@@ -112,11 +113,13 @@ public class AnalysePhotoViewModel implements OnSuccessListener<String>, Propose
     public void onRemove(ProposedTvdNumber tvd, int position) {
         ProposedTvdNumber removed = proposedTvds.remove(tvd.tvdNumber);
         assert removed != null;
+        executor.playSoundTouch();
         executor.updateProposedList(proposedTvdsAsList());
     }
 
     public interface ICommandExecutor {
-        void playSound();
+        void playSoundTextRecognized();
+        void playSoundTouch();
         void updateProposedList(List<ProposedTvdNumber> list);
     }
 }

@@ -43,12 +43,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
+        android:adjustViewBounds="true"
+        android:backgroundTint="@color/cardview_light_background"
+        android:scaleType="fitCenter"
         android:src="@drawable/ic_flash_on_black_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/proposalList"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_flash_off_black_24dp"
+        app:backgroundTint="@color/cardview_light_background"
+        app:fabSize="auto"
         app:layout_constraintBottom_toTopOf="@+id/proposalList"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -58,7 +75,9 @@
         android:layout_height="0dp"
         android:layout_gravity="bottom"
         android:layoutDirection="inherit"
-        android:padding="16dp"
+        android:paddingStart="27dp"
+        android:paddingEnd="27dp"
+        android:paddingBottom="27dp"
         android:scrollbars="vertical"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
