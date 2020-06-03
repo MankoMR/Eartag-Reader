@@ -29,6 +29,7 @@ import java.util.concurrent.Executors;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -95,6 +96,14 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
         releaseMediaplayers();
         super.onStop();
     }
+
+    /**
+     * This function sets the View up.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -114,7 +123,7 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
                 // This should never be reached.
             }
         }, ContextCompat.getMainExecutor(getContext()));
-        binding.imageButton.setOnClickListener(this::toggleFlashLamp);
+        binding.fabToggleFlash.setOnClickListener(this::toggleFlashLamp);
         return binding.getRoot();
     }
     private void navigateBack(){
@@ -122,33 +131,50 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
         Navigation.findNavController(binding.getRoot()).navigate(action);
     }
 
+    /**
+     * This Methods sets up all the required pieces to show a stream from the camera, to analyse
+     * images from stream and to toggle the flashlight.
+     *
+     * @param cameraProvider A singleton which can be used to bind the lifecycle of cameras
+     *                       to any {@link LifecycleOwner} within an application's process.
+     */
     private void cameraSetup(@NonNull ProcessCameraProvider cameraProvider) {
+        //Automatically selects a camera based on the requirements.
+        CameraSelector cameraSelector = new CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build();
+        //Setup the Preview to be shown on the screen.
         Preview preview = new Preview.Builder()
                 //.setTargetResolution(new Size(720,720)))
                 .setTargetResolution(new Size(1080,1080))
                 .build();
-        CameraSelector cameraSelector = new CameraSelector.Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                .build();
+        preview.setSurfaceProvider(binding.tvCamStream.createSurfaceProvider());
 
-        // Build the image analysis use case and instantiate our analyzer
+        // Setup the image analysis use case and instantiate the analyzer
         ImageAnalysis analyzerUseCase = new ImageAnalysis.Builder()
                 .setTargetResolution(new Size(1080,1080))
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build();
         analyzerUseCase.setAnalyzer(Executors.newSingleThreadExecutor(), new TextRecognizer(viewModel));
 
+        //Gets a camera object to control the flashlight and binds the lifecyle of the objects to
+        //the lifetime this fragment
         camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview,analyzerUseCase);
-        preview.setSurfaceProvider(binding.tvCamStream.createSurfaceProvider());
     }
+
+    /**
+     * This method gets called when the fabToggleFlash-Button gets pressed.
+     * It changes the Icon on the Button and also the Flashlight.
+     * @param view
+     */
     private void toggleFlashLamp(View view) {
         try {
             int torchstate = camera.getCameraInfo().getTorchState().getValue();
             if (torchstate == TorchState.OFF) {
-                binding.imageButton.setImageResource(R.drawable.ic_flash_off_black_24dp);
+                binding.fabToggleFlash.setImageResource(R.drawable.ic_flash_off_black_24dp);
                 camera.getCameraControl().enableTorch(true);
             } else if (torchstate == TorchState.ON) {
-                binding.imageButton.setImageResource(R.drawable.ic_flash_on_black_24dp);
+                binding.fabToggleFlash.setImageResource(R.drawable.ic_flash_on_black_24dp);
                 camera.getCameraControl().enableTorch(false);
             }
             playSoundTextRecognized();
@@ -157,16 +183,24 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
         }
     }
 
+    /**
+     * This methods gets called from AnalysePhotoViewModel
+     */
     public void playSoundTextRecognized() {
         newEntityPlayer.seekTo(0);
         newEntityPlayer.start();
     }
-
+    /**
+     * This methods gets called from AnalysePhotoViewModel
+     */
     public void playSoundTouch() {
         onAddPlayer.seekTo(0);
         onAddPlayer.start();
     }
-
+    /**
+     * This methods gets called from AnalysePhotoViewModel.
+     * It updates the list shown on the screen to the current one.
+     */
     public void updateProposedList(List<ProposedTvdNumber> list){
         ProposedTvdListAdapter adapter = (ProposedTvdListAdapter) binding.proposalList.getAdapter();
         adapter.submitList(list);
