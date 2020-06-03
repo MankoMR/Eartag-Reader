@@ -66,7 +66,7 @@ public class AnalysePhotoFragment extends Fragment implements CameraXConfig.Prov
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mediaPlayer = MediaPlayer.create(getContext(), Settings.System.DEFAULT_NOTIFICATION_URI);
+        mediaPlayer = MediaPlayer.create(getContext(), R.raw.ui_unlock);
     }
 
     @SuppressLint("RestrictedApi")
