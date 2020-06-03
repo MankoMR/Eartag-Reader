@@ -1,6 +1,7 @@
 package ch.band.manko.tvdnumberreader.data;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteConstraintException;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -36,7 +37,9 @@ public class TvdNumberRepository {
 
     public void addTvdNumber(@NonNull TvdNumber number){
         TvdNumberDatabase.databaseWriteExecutor.execute(()->{
-            database.insertAll(number);
+            try {
+                database.insertAll(number);
+            } catch (SQLiteConstraintException ignored){}
         });
     }
     public Future<Boolean> containsTvdNumber(@NonNull TvdNumber number){

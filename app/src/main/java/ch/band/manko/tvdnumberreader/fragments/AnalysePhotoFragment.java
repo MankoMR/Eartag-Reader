@@ -73,6 +73,7 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
     private void releaseMediaplayers(){
         onAddPlayer.release();
         newEntityPlayer.release();
+        onAddPlayer = newEntityPlayer = null;
     }
     private void instantiateMediaPlayers(){
         newEntityPlayer = MediaPlayer.create(getContext(), R.raw.ui_unlock);
@@ -89,12 +90,6 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
     public void onPause() {
         releaseMediaplayers();
         super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        releaseMediaplayers();
-        super.onStop();
     }
 
     /**
@@ -187,6 +182,8 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
      * This methods gets called from AnalysePhotoViewModel
      */
     public void playSoundTextRecognized() {
+        if(newEntityPlayer == null)
+            return;
         newEntityPlayer.seekTo(0);
         newEntityPlayer.start();
     }
@@ -194,6 +191,8 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
      * This methods gets called from AnalysePhotoViewModel
      */
     public void playSoundTouch() {
+        if(onAddPlayer == null)
+            return;
         onAddPlayer.seekTo(0);
         onAddPlayer.start();
     }
@@ -203,7 +202,9 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
      */
     public void updateProposedList(List<ProposedTvdNumber> list){
         ProposedTvdListAdapter adapter = (ProposedTvdListAdapter) binding.proposalList.getAdapter();
-        adapter.submitList(list);
-        adapter.notifyDataSetChanged();
+        if (adapter != null) {
+            adapter.submitList(list);
+            adapter.notifyDataSetChanged();
+        }
     }
 }
