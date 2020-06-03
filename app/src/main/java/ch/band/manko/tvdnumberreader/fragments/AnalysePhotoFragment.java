@@ -123,8 +123,7 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
         return binding.getRoot();
     }
     private void navigateBack(){
-        NavDirections action = AnalysePhotoFragmentDirections.actionShowList();
-        Navigation.findNavController(binding.getRoot()).navigate(action);
+        Navigation.findNavController(binding.getRoot()).popBackStack();
     }
 
     /**
