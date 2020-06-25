@@ -1,4 +1,4 @@
-package ch.band.manko.tvdnumberreader;
+package ch.band.manko.eartagreader;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -25,9 +25,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import ch.band.manko.tvdnumberreader.data.EarTagRepository;
-import ch.band.manko.tvdnumberreader.databinding.ActivityMainBinding;
-import ch.band.manko.tvdnumberreader.models.EarTag;
+import ch.band.manko.eartagreader.data.EarTagRepository;
+import ch.band.manko.eartagreader.databinding.ActivityMainBinding;
+import ch.band.manko.eartagreader.models.EarTag;
 
 import static androidx.core.content.FileProvider.getUriForFile;
 

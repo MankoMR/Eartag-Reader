@@ -1,4 +1,4 @@
-package ch.band.manko.tvdnumberreader.adapters;
+package ch.band.manko.eartagreader.adapters;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ch.band.manko.tvdnumberreader.R;
-import ch.band.manko.tvdnumberreader.databinding.ProposedTvdItemBinding;
-import ch.band.manko.tvdnumberreader.models.ProposedEarTag;
+import ch.band.manko.eartagreader.R;
+import ch.band.manko.eartagreader.databinding.ProposedTvdItemBinding;
+import ch.band.manko.eartagreader.models.ProposedEarTag;
 
 /**
  * @See <a href="https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter">ListAdapter</a>

@@ -1,4 +1,4 @@
-package ch.band.manko.tvdnumberreader.data;
+package ch.band.manko.eartagreader.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
@@ -9,8 +9,8 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 import java.util.concurrent.Future;
 
-import ch.band.manko.tvdnumberreader.R;
-import ch.band.manko.tvdnumberreader.models.EarTag;
+import ch.band.manko.eartagreader.R;
+import ch.band.manko.eartagreader.models.EarTag;
 
 /*
  * https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#7

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/MainFragment"
-        android:name="ch.band.manko.tvdnumberreader.fragments.TextListFragment"
+        android:name="ch.band.manko.eartagreader.fragments.TextListFragment"
         android:label="@string/main_fragment_name"
         tools:layout="@layout/fragment_list">
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/AddFragment"
-        android:name="ch.band.manko.tvdnumberreader.fragments.AnalysePhotoFragment"
+        android:name="ch.band.manko.eartagreader.fragments.AnalysePhotoFragment"
         android:label="@string/add_fragment_name"
         tools:layout="@layout/fragment_analyse_photo">
 

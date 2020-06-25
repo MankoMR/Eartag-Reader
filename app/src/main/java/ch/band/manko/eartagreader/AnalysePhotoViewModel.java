@@ -1,4 +1,4 @@
-package ch.band.manko.tvdnumberreader;
+package ch.band.manko.eartagreader;
 
 import android.content.Context;
 import android.util.Log;
@@ -13,10 +13,10 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import ch.band.manko.tvdnumberreader.adapters.ProposedTvdListAdapter;
-import ch.band.manko.tvdnumberreader.data.EarTagRepository;
-import ch.band.manko.tvdnumberreader.models.EarTag;
-import ch.band.manko.tvdnumberreader.models.ProposedEarTag;
+import ch.band.manko.eartagreader.adapters.ProposedTvdListAdapter;
+import ch.band.manko.eartagreader.data.EarTagRepository;
+import ch.band.manko.eartagreader.models.EarTag;
+import ch.band.manko.eartagreader.models.ProposedEarTag;
 
 /**
  * The AnalysePhotoViewModel got created to separate the business Logic from UI management logic since

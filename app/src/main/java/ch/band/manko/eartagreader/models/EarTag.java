@@ -1,4 +1,4 @@
-package ch.band.manko.tvdnumberreader.models;
+package ch.band.manko.eartagreader.models;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

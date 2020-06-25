@@ -1,4 +1,4 @@
-package ch.band.manko.tvdnumberreader;
+package ch.band.manko.eartagreader;
 
 import android.annotation.SuppressLint;
 import android.media.Image;

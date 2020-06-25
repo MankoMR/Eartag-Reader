@@ -7,7 +7,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId 'ch.band.manko.tvdnumberreader'
+        applicationId 'ch.band.manko.eartagreader'
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1

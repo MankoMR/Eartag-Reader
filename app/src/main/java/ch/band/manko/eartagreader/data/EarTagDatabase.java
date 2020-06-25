@@ -1,4 +1,4 @@
-package ch.band.manko.tvdnumberreader.data;
+package ch.band.manko.eartagreader.data;
 
 import android.content.Context;
 
@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import ch.band.manko.tvdnumberreader.models.EarTag;
+import ch.band.manko.eartagreader.models.EarTag;
 
 /*
  * https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#6

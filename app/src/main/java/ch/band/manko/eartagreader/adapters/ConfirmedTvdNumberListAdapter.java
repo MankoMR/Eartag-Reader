@@ -1,4 +1,4 @@
-package ch.band.manko.tvdnumberreader.adapters;
+package ch.band.manko.eartagreader.adapters;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ch.band.manko.tvdnumberreader.databinding.ConfirmedTvdnumberItemBinding;
-import ch.band.manko.tvdnumberreader.models.EarTag;
+import ch.band.manko.eartagreader.databinding.ConfirmedTvdnumberItemBinding;
+import ch.band.manko.eartagreader.models.EarTag;
 
 /**
  * @See <a href="https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter">ListAdapter</a>

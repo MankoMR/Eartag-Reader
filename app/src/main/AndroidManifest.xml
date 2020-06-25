@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ch.band.manko.tvdnumberreader">
+    package="ch.band.manko.eartagreader">
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" android:required="true" />
     <application
@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="ch.band.manko.tvdnumberreader.fileprovider"
+            android:authorities="ch.band.manko.eartagreader.fileprovider"
             android:grantUriPermissions="true"
             android:exported="false">
             <meta-data
@@ -21,7 +21,7 @@
         </provider>
 
         <activity
-            android:name=".MainActivity"
+            android:name="ch.band.manko.eartagreader.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

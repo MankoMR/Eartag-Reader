@@ -1,4 +1,4 @@
-package ch.band.manko.tvdnumberreader.fragments;
+package ch.band.manko.eartagreader.fragments;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -20,11 +20,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.List;
 
-import ch.band.manko.tvdnumberreader.R;
-import ch.band.manko.tvdnumberreader.adapters.ConfirmedTvdNumberListAdapter;
-import ch.band.manko.tvdnumberreader.data.EarTagRepository;
-import ch.band.manko.tvdnumberreader.databinding.FragmentListBinding;
-import ch.band.manko.tvdnumberreader.models.EarTag;
+import ch.band.manko.eartagreader.R;
+import ch.band.manko.eartagreader.adapters.ConfirmedTvdNumberListAdapter;
+import ch.band.manko.eartagreader.data.EarTagRepository;
+import ch.band.manko.eartagreader.databinding.FragmentListBinding;
+import ch.band.manko.eartagreader.models.EarTag;
 
 /**
  * This is the Fragment that is shown after starting the app

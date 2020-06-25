@@ -1,4 +1,4 @@
-package ch.band.manko.tvdnumberreader.models;
+package ch.band.manko.eartagreader.models;
 
 /**
  * A ProposedEarTag is a tvd-number which the user might add to the tvd-number list.

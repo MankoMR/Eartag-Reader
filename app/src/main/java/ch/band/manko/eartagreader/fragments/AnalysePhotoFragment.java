@@ -1,4 +1,4 @@
-package ch.band.manko.tvdnumberreader.fragments;
+package ch.band.manko.eartagreader.fragments;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -29,12 +29,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
-import ch.band.manko.tvdnumberreader.AnalysePhotoViewModel;
-import ch.band.manko.tvdnumberreader.R;
-import ch.band.manko.tvdnumberreader.TextRecognizer;
-import ch.band.manko.tvdnumberreader.adapters.ProposedTvdListAdapter;
-import ch.band.manko.tvdnumberreader.databinding.FragmentAnalysePhotoBinding;
-import ch.band.manko.tvdnumberreader.models.ProposedEarTag;
+import ch.band.manko.eartagreader.AnalysePhotoViewModel;
+import ch.band.manko.eartagreader.R;
+import ch.band.manko.eartagreader.TextRecognizer;
+import ch.band.manko.eartagreader.adapters.ProposedTvdListAdapter;
+import ch.band.manko.eartagreader.databinding.FragmentAnalysePhotoBinding;
+import ch.band.manko.eartagreader.models.ProposedEarTag;
 
 public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewModel.ICommandExecutor {
     private static final String TAG = AnalysePhotoFragment.class.getSimpleName();
