@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TVD-Number Reader</string>
+    <string name="app_name">Ohrmarken Leser</string>
     <string name="action_settings">Einstellungen</string>
-    <string name="main_fragment_name">TVD-Nummer Liste</string>
-    <string name="add_fragment_name">TVD-Nummer Hinzufügen</string>
+    <string name="main_fragment_name">Ohrmarken Liste</string>
+    <string name="add_fragment_name">Ohrmarken Hinzufügen</string>
     <string name="delete_list">Liste Löschen</string>
     <string name="share_list">Liste Teilen</string>
-    <string name="tvdNumber">TVD-Number</string>
+    <string name="tvdNumber">Ohrmarken</string>
     <string name="confirm_delete_list">Möchten Sie unwiederuflich die Liste löschen?</string>
     <string name="confirm">Bestätigen</string>
     <string name="abort">Abbrechen</string>
-    <string name="share_title">TVD-Nummer-Liste</string>
+    <string name="share_title">Ohrmarken-Liste</string>
     <string name="no_camera_permission">Keine Erlaubnis die Kamera zu benutzen.</string>
 </resources>
