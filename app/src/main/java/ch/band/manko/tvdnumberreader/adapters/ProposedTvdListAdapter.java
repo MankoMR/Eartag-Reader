@@ -11,29 +11,27 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Locale;
-
 import ch.band.manko.tvdnumberreader.R;
 import ch.band.manko.tvdnumberreader.databinding.ProposedTvdItemBinding;
-import ch.band.manko.tvdnumberreader.models.ProposedTvdNumber;
+import ch.band.manko.tvdnumberreader.models.ProposedEarTag;
 
 /**
  * @See <a href="https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter">ListAdapter</a>
  * @See <a href="https://developer.android.com/guide/topics/ui/layout/recyclerview">Recyclerview</a>
  */
-public class ProposedTvdListAdapter extends ListAdapter<ProposedTvdNumber, ProposedTvdListAdapter.ProposedTvdItem> {
+public class ProposedTvdListAdapter extends ListAdapter<ProposedEarTag, ProposedTvdListAdapter.ProposedTvdItem> {
 
-    private static final DiffUtil.ItemCallback<ProposedTvdNumber> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<ProposedTvdNumber>() {
+    private static final DiffUtil.ItemCallback<ProposedEarTag> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<ProposedEarTag>() {
                 @Override
                 public boolean areItemsTheSame(
-                        @NonNull ProposedTvdNumber oldTvd, @NonNull ProposedTvdNumber newTvd) {
+                        @NonNull ProposedEarTag oldTvd, @NonNull ProposedEarTag newTvd) {
                     // User properties may have changed if reloaded from the DB, but ID is fixed
                     return oldTvd == newTvd;
                 }
                 @Override
                 public boolean areContentsTheSame(
-                        @NonNull ProposedTvdNumber oldTvd, @NonNull ProposedTvdNumber newTvd) {
+                        @NonNull ProposedEarTag oldTvd, @NonNull ProposedEarTag newTvd) {
                     // NOTE: if you use equals, your object must properly override Object#equals()
                     // Incorrectly returning false here will result in too many animations.
                     return oldTvd.equals(newTvd);
@@ -61,7 +59,7 @@ public class ProposedTvdListAdapter extends ListAdapter<ProposedTvdNumber, Propo
 
     class ProposedTvdItem extends RecyclerView.ViewHolder {
         private ProposedTvdItemBinding binding;
-        private ProposedTvdNumber tvd;
+        private ProposedEarTag tvd;
         private int position;
 
         public ProposedTvdItem(@NonNull ProposedTvdItemBinding itemView) {
@@ -76,9 +74,9 @@ public class ProposedTvdListAdapter extends ListAdapter<ProposedTvdNumber, Propo
             });
         }
         @SuppressLint("DefaultLocale")
-        public void setContent(ProposedTvdNumber tvd, int position){
+        public void setContent(ProposedEarTag tvd, int position){
             this.tvd = tvd;
-            binding.text.setText(tvd.tvdNumber);
+            binding.text.setText(tvd.number);
             binding.occurence.setText(String.format("%d",tvd.occurrence));
             if (tvd.isRegistered){
                 int color = ResourcesCompat.getColor(binding.getRoot().getResources(),R.color.exist,null);
@@ -93,7 +91,7 @@ public class ProposedTvdListAdapter extends ListAdapter<ProposedTvdNumber, Propo
         }
     };
     public interface ItemInteractions{
-        void onConfirm(ProposedTvdNumber tvd, int position);
-        void onRemove(ProposedTvdNumber tvd, int position);
+        void onConfirm(ProposedEarTag tvd, int position);
+        void onRemove(ProposedEarTag tvd, int position);
     }
 }

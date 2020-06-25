@@ -25,9 +25,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import ch.band.manko.tvdnumberreader.data.TvdNumberRepository;
+import ch.band.manko.tvdnumberreader.data.EarTagRepository;
 import ch.band.manko.tvdnumberreader.databinding.ActivityMainBinding;
-import ch.band.manko.tvdnumberreader.models.TvdNumber;
+import ch.band.manko.tvdnumberreader.models.EarTag;
 
 import static androidx.core.content.FileProvider.getUriForFile;
 
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private ActivityMainBinding binding;
-    private TvdNumberRepository repository;
+    private EarTagRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = binding.toolbar;
         setSupportActionBar(toolbar);
 
-        repository = new TvdNumberRepository(getApplicationContext());
+        repository = new EarTagRepository(getApplicationContext());
 
     }
     /**
@@ -60,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         //with the following statement it observes the tvd-number list and if the list is empty it hides the
         //share and delete button, since there nothing to share or delete.
-        repository.getAll().observe(this, new Observer<List<TvdNumber>>() {
+        repository.getAll().observe(this, new Observer<List<EarTag>>() {
             @Override
-            public void onChanged(List<TvdNumber> tvdNumbers) {
-                boolean showShareButton = tvdNumbers.size() > 0;
+            public void onChanged(List<EarTag> earTags) {
+                boolean showShareButton = earTags.size() > 0;
                 MenuItem share = binding.toolbar.getMenu().findItem(R.id.share);
                 share.setEnabled(showShareButton);
                 share.setVisible(showShareButton);
@@ -131,14 +131,14 @@ public class MainActivity extends AppCompatActivity {
      * @See <a href="https://developer.android.com/training/secure-file-sharing">Sharing Files</a>
      *
      * @param name: The name the file should have.
-     * @param repository: The TvdNumberRepository from which the content for the file can be accessed.
+     * @param repository: The EarTagRepository from which the content for the file can be accessed.
      * @return an Uri to share with other Apps, pointing to the location of the file.
      *
      * @throws IOException
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    private Uri createFile(String name, TvdNumberRepository repository) throws IOException, ExecutionException, InterruptedException {
+    private Uri createFile(String name, EarTagRepository repository) throws IOException, ExecutionException, InterruptedException {
         //gets the storagelocation to store the file and creates the folders if necessary.
         File path = new File(getFilesDir(),getString(R.string.storagelocation));
         path.mkdirs();
@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         csv.createNewFile();
         //writes the String from AllTvdNUmbersasCSV to the file
         FileWriter writer = new FileWriter(csv);
-        writer.append(repository.allTvdNUmbersAsCSV(getApplicationContext()).get());
+        writer.append(repository.allEarTagsAsCSV(getApplicationContext()).get());
         writer.close();
         //get the Uri to the file from the fileprovider with the authority described in the manifest
         //(res/values/strings/authority should be the string describing the authority in the manifest

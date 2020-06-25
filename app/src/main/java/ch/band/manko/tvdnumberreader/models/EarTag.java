@@ -16,25 +16,25 @@ import java.util.Objects;
  * @See <a href="https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#4">Tutorial</a>
  */
 @Entity
-public class TvdNumber {
+public class EarTag {
     @PrimaryKey
     @NonNull
-    public String tvdNumber;
+    public String number;
 
-    public TvdNumber(@NonNull String tvdNumber){
-        this.tvdNumber = tvdNumber;
+    public EarTag(@NonNull String number){
+        this.number = number;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TvdNumber that = (TvdNumber) o;
-        return Objects.equals(tvdNumber, that.tvdNumber);
+        EarTag that = (EarTag) o;
+        return Objects.equals(number, that.number);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tvdNumber);
+        return Objects.hash(number);
     }
 }

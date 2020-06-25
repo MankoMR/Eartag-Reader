@@ -9,24 +9,24 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ch.band.manko.tvdnumberreader.databinding.ConfirmedTvdnumberItemBinding;
-import ch.band.manko.tvdnumberreader.models.TvdNumber;
+import ch.band.manko.tvdnumberreader.models.EarTag;
 
 /**
  * @See <a href="https://developer.android.com/reference/androidx/recyclerview/widget/ListAdapter">ListAdapter</a>
  * @See <a href="https://developer.android.com/guide/topics/ui/layout/recyclerview">Recyclerview</a>
  */
-public class ConfirmedTvdNumberListAdapter extends ListAdapter<TvdNumber, ConfirmedTvdNumberListAdapter.ConfirmedTvdNumberItem> {
-    private static final DiffUtil.ItemCallback<TvdNumber> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<TvdNumber>() {
+public class ConfirmedTvdNumberListAdapter extends ListAdapter<EarTag, ConfirmedTvdNumberListAdapter.ConfirmedTvdNumberItem> {
+    private static final DiffUtil.ItemCallback<EarTag> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<EarTag>() {
                 @Override
                 public boolean areItemsTheSame(
-                        @NonNull TvdNumber oldTvd, @NonNull TvdNumber newTvd) {
+                        @NonNull EarTag oldTvd, @NonNull EarTag newTvd) {
                     // User properties may have changed if reloaded from the DB, but ID is fixed
                     return oldTvd == newTvd;
                 }
                 @Override
                 public boolean areContentsTheSame(
-                        @NonNull TvdNumber oldTvd, @NonNull TvdNumber newTvd) {
+                        @NonNull EarTag oldTvd, @NonNull EarTag newTvd) {
                     // NOTE: if you use equals, your object must properly override Object#equals()
                     // Incorrectly returning false here will result in too many animations.
                     return oldTvd.equals(newTvd);
@@ -51,21 +51,21 @@ public class ConfirmedTvdNumberListAdapter extends ListAdapter<TvdNumber, Confir
     }
 
     public class ConfirmedTvdNumberItem extends RecyclerView.ViewHolder {
-        TvdNumber number;
+        EarTag number;
         ConfirmedTvdnumberItemBinding binding;
         private int position;
 
         public ConfirmedTvdNumberItem(@NonNull ConfirmedTvdnumberItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-            number = new TvdNumber("");
+            number = new EarTag("");
             position = -1;
         }
 
-        public void setContent(TvdNumber number, int position){
+        public void setContent(EarTag number, int position){
             this.number = number;
             this.position = position;
-            binding.tvdNumber.setText(number.tvdNumber.toString());
+            binding.tvdNumber.setText(number.number.toString());
         }
     }
 }

@@ -1,6 +1,5 @@
 package ch.band.manko.tvdnumberreader.fragments;
 
-import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,12 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.util.Size;
 
-import androidx.annotation.Nullable;
-import androidx.camera.camera2.Camera2Config;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
-import androidx.camera.core.CameraX;
-import androidx.camera.core.CameraXConfig;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.Preview;
 import androidx.camera.core.TorchState;
@@ -23,14 +18,12 @@ import androidx.core.content.ContextCompat;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -41,7 +34,7 @@ import ch.band.manko.tvdnumberreader.R;
 import ch.band.manko.tvdnumberreader.TextRecognizer;
 import ch.band.manko.tvdnumberreader.adapters.ProposedTvdListAdapter;
 import ch.band.manko.tvdnumberreader.databinding.FragmentAnalysePhotoBinding;
-import ch.band.manko.tvdnumberreader.models.ProposedTvdNumber;
+import ch.band.manko.tvdnumberreader.models.ProposedEarTag;
 
 public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewModel.ICommandExecutor {
     private static final String TAG = AnalysePhotoFragment.class.getSimpleName();
@@ -201,7 +194,7 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
      * This methods gets called from AnalysePhotoViewModel.
      * It updates the list shown on the screen to the current one.
      */
-    public void updateProposedList(List<ProposedTvdNumber> list){
+    public void updateProposedList(List<ProposedEarTag> list){
         ProposedTvdListAdapter adapter = (ProposedTvdListAdapter) binding.proposalList.getAdapter();
         if (adapter != null) {
             adapter.submitList(list);

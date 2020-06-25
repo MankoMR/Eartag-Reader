@@ -14,9 +14,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import ch.band.manko.tvdnumberreader.adapters.ProposedTvdListAdapter;
-import ch.band.manko.tvdnumberreader.data.TvdNumberRepository;
-import ch.band.manko.tvdnumberreader.models.ProposedTvdNumber;
-import ch.band.manko.tvdnumberreader.models.TvdNumber;
+import ch.band.manko.tvdnumberreader.data.EarTagRepository;
+import ch.band.manko.tvdnumberreader.models.EarTag;
+import ch.band.manko.tvdnumberreader.models.ProposedEarTag;
 
 /**
  * The AnalysePhotoViewModel got created to separate the business Logic from UI management logic since
@@ -30,29 +30,29 @@ import ch.band.manko.tvdnumberreader.models.TvdNumber;
 public class AnalysePhotoViewModel implements OnSuccessListener<String>, ProposedTvdListAdapter.ItemInteractions {
     private static final String TAG = AnalysePhotoViewModel.class.getSimpleName();
 
-    private HashMap<String, ProposedTvdNumber> proposedTvds;
+    private HashMap<String, ProposedEarTag> proposedEarTags;
     private ICommandExecutor executor;
-    private TvdNumberRepository repository;
+    private EarTagRepository repository;
 
     /**
      * Creates a new AnalysePhotoViewModel
      * @param commandExecutor is an object, which implements the commands defined in the interface.
-     * @param context the AppContext (to create a TvdNumberRepository)
+     * @param context the AppContext (to create a EarTagRepository)
      */
     public AnalysePhotoViewModel(ICommandExecutor commandExecutor, Context context)
     {
-        proposedTvds =  new HashMap<>();
+        proposedEarTags =  new HashMap<>();
         executor = commandExecutor;
-        repository = new TvdNumberRepository(context);
+        repository = new EarTagRepository(context);
     }
 
     /**
      * Helperfunction to convert the @Link{#proposedTvds} to a List.
-     * It also sorts the list with the interface Comparable<ProposedTvdNumber> implemented on ProposedTvdNumber.
+     * It also sorts the list with the interface Comparable<ProposedEarTag> implemented on ProposedEarTag.
      * @return a sorted list of the current ProposedTvdNumbers.
      */
-    private List<ProposedTvdNumber> proposedTvdsAsList(){
-        ArrayList<ProposedTvdNumber> list = new ArrayList<>(proposedTvds.values());
+    private List<ProposedEarTag> proposedEarTagsAsList(){
+        ArrayList<ProposedEarTag> list = new ArrayList<>(proposedEarTags.values());
         Collections.sort(list);
         return list;
     }
@@ -60,7 +60,7 @@ public class AnalysePhotoViewModel implements OnSuccessListener<String>, Propose
     /**
      * If TextRecognizer recognized a new tvd-number it checks whether the number is already on the list
      * and if the proposal already exists. if it exists the occurrence-counter gets 1 added or a new
-     * ProposedTvdNumber gets created. If necessary, the UI gets an update.
+     * ProposedEarTag gets created. If necessary, the UI gets an update.
      *
      * @param text
      */
@@ -68,18 +68,18 @@ public class AnalysePhotoViewModel implements OnSuccessListener<String>, Propose
     public void onSuccess(String text) {
         if(text != null){
 
-            Future<Boolean> isRegistered = repository.containsTvdNumber(new TvdNumber(text));
+            Future<Boolean> isRegistered = repository.containsEarTag(new EarTag(text));
             try {
-                ProposedTvdNumber newItem = new ProposedTvdNumber(text, 1, isRegistered.get());
+                ProposedEarTag newItem = new ProposedEarTag(text, 1, isRegistered.get());
 
-                if(!proposedTvds.containsKey(text)){
+                if(!proposedEarTags.containsKey(text)){
                     executor.playSoundTextRecognized();
-                    proposedTvds.put(text,newItem);
+                    proposedEarTags.put(text,newItem);
                     Log.w(TAG,text);
                 }else{
-                    Objects.requireNonNull(proposedTvds.get(text)).occurrence++;
+                    Objects.requireNonNull(proposedEarTags.get(text)).occurrence++;
                 }
-                executor.updateProposedList(proposedTvdsAsList());
+                executor.updateProposedList(proposedEarTagsAsList());
 
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
@@ -88,38 +88,38 @@ public class AnalysePhotoViewModel implements OnSuccessListener<String>, Propose
     }
 
     /**
-     * Gets called when the user tips the check mark on a ProposedTvdNumber
+     * Gets called when the user tips the check mark on a ProposedEarTag
      *
-     * @param tvd the ProposedTvdNumber the user tipped.
-     * @param position of the ProposedTvdNumber on the screen (not needed, refactor?)
+     * @param tvd the ProposedEarTag the user tipped.
+     * @param position of the ProposedEarTag on the screen (not needed, refactor?)
      */
     @Override
-    public void onConfirm(ProposedTvdNumber tvd, int position) {
-        ProposedTvdNumber removed = proposedTvds.remove(tvd.tvdNumber);
+    public void onConfirm(ProposedEarTag tvd, int position) {
+        ProposedEarTag removed = proposedEarTags.remove(tvd.number);
         assert removed != null;
         if(!tvd.isRegistered){
-            repository.addTvdNumber(new TvdNumber(tvd.tvdNumber));
+            repository.addEarTag(new EarTag(tvd.number));
             executor.playSoundTouch();
         }
-        executor.updateProposedList(proposedTvdsAsList());
+        executor.updateProposedList(proposedEarTagsAsList());
     }
 
     /**
-     * Gets called when the user tips the x mark on a ProposedTvdNumber
-     * @param tvd the ProposedTvdNumber the user tipped.
-     * @param position of the ProposedTvdNumber on the screen (not needed, refactor?)
+     * Gets called when the user tips the x mark on a ProposedEarTag
+     * @param tvd the ProposedEarTag the user tipped.
+     * @param position of the ProposedEarTag on the screen (not needed, refactor?)
      */
     @Override
-    public void onRemove(ProposedTvdNumber tvd, int position) {
-        ProposedTvdNumber removed = proposedTvds.remove(tvd.tvdNumber);
+    public void onRemove(ProposedEarTag tvd, int position) {
+        ProposedEarTag removed = proposedEarTags.remove(tvd.number);
         assert removed != null;
         executor.playSoundTouch();
-        executor.updateProposedList(proposedTvdsAsList());
+        executor.updateProposedList(proposedEarTagsAsList());
     }
 
     public interface ICommandExecutor {
         void playSoundTextRecognized();
         void playSoundTouch();
-        void updateProposedList(List<ProposedTvdNumber> list);
+        void updateProposedList(List<ProposedEarTag> list);
     }
 }

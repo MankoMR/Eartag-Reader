@@ -1,10 +1,8 @@
 package ch.band.manko.tvdnumberreader.fragments;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,25 +10,21 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import ch.band.manko.tvdnumberreader.R;
 import ch.band.manko.tvdnumberreader.adapters.ConfirmedTvdNumberListAdapter;
-import ch.band.manko.tvdnumberreader.data.TvdNumberRepository;
+import ch.band.manko.tvdnumberreader.data.EarTagRepository;
 import ch.band.manko.tvdnumberreader.databinding.FragmentListBinding;
-import ch.band.manko.tvdnumberreader.models.TvdNumber;
+import ch.band.manko.tvdnumberreader.models.EarTag;
 
 /**
  * This is the Fragment that is shown after starting the app
@@ -102,11 +96,11 @@ public class TextListFragment extends Fragment implements ActivityCompat.OnReque
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TvdNumberRepository repository = new TvdNumberRepository(getContext());
-        repository.getAll().observe(this.getViewLifecycleOwner(), new Observer<List<TvdNumber>>() {
+        EarTagRepository repository = new EarTagRepository(getContext());
+        repository.getAll().observe(this.getViewLifecycleOwner(), new Observer<List<EarTag>>() {
             @Override
-            public void onChanged(List<TvdNumber> tvdNumbers) {
-                updateProposedList(tvdNumbers);
+            public void onChanged(List<EarTag> earTags) {
+                updateProposedList(earTags);
             }
         });
     }
@@ -115,7 +109,7 @@ public class TextListFragment extends Fragment implements ActivityCompat.OnReque
      * Updates the to the user shown list, with the new list.
      * @param list
      */
-    private void updateProposedList(List<TvdNumber> list){
+    private void updateProposedList(List<EarTag> list){
         ConfirmedTvdNumberListAdapter adapter = (ConfirmedTvdNumberListAdapter) binding.rvTextlist.getAdapter();
         if(adapter == null)
             return;

@@ -10,46 +10,46 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 import ch.band.manko.tvdnumberreader.R;
-import ch.band.manko.tvdnumberreader.models.TvdNumber;
+import ch.band.manko.tvdnumberreader.models.EarTag;
 
 /*
  * https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#7
  */
-public class TvdNumberRepository {
-    private  TvdNumberDao database;
-    public TvdNumberRepository(Context context){
-        TvdNumberDatabase db = TvdNumberDatabase.getDatabase(context);
+public class EarTagRepository {
+    private EarTagDao database;
+    public EarTagRepository(Context context){
+        EarTagDatabase db = EarTagDatabase.getDatabase(context);
         database = db.numberDao();
     }
-    public Future<String> allTvdNUmbersAsCSV(Context context){
-        return TvdNumberDatabase.databaseWriteExecutor.submit(()->{
+    public Future<String> allEarTagsAsCSV(Context context){
+        return EarTagDatabase.databaseWriteExecutor.submit(()->{
             StringBuilder s = new StringBuilder(context.getResources().getString(R.string.tvdNumber) + "\n");
-            for (TvdNumber number: database.getAllAsync()) {
-                s.append(number.tvdNumber);
+            for (EarTag number: database.getAllAsync()) {
+                s.append(number.number);
                 s.append("\n");
             }
             return s.toString();
         });
     }
-    public LiveData<List<TvdNumber>> getAll(){
+    public LiveData<List<EarTag>> getAll(){
         return  database.getAll();
     }
 
-    public void addTvdNumber(@NonNull TvdNumber number){
-        TvdNumberDatabase.databaseWriteExecutor.execute(()->{
+    public void addEarTag(@NonNull EarTag number){
+        EarTagDatabase.databaseWriteExecutor.execute(()->{
             try {
                 database.insertAll(number);
             } catch (SQLiteConstraintException ignored){}
         });
     }
-    public Future<Boolean> containsTvdNumber(@NonNull TvdNumber number){
-        return TvdNumberDatabase.databaseWriteExecutor.submit(()->{
-           return database.contains(number.tvdNumber);
+    public Future<Boolean> containsEarTag(@NonNull EarTag number){
+        return EarTagDatabase.databaseWriteExecutor.submit(()->{
+           return database.contains(number.number);
         });
     }
 
     public void deleteAll(){
-        TvdNumberDatabase.databaseWriteExecutor.execute(()->{
+        EarTagDatabase.databaseWriteExecutor.execute(()->{
             database.deleteAll();
         });
     }
