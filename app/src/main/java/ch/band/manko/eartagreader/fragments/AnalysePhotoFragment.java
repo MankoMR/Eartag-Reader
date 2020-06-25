@@ -32,7 +32,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 import ch.band.manko.eartagreader.AnalysePhotoViewModel;
 import ch.band.manko.eartagreader.R;
 import ch.band.manko.eartagreader.TextRecognizer;
-import ch.band.manko.eartagreader.adapters.ProposedTvdListAdapter;
+import ch.band.manko.eartagreader.adapters.ProposedEarTagListAdapter;
 import ch.band.manko.eartagreader.databinding.FragmentAnalysePhotoBinding;
 import ch.band.manko.eartagreader.models.ProposedEarTag;
 
@@ -101,7 +101,7 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
         binding = FragmentAnalysePhotoBinding.inflate(inflater,container,false);
         binding.fabConfirm.setOnClickListener(view -> navigateBack());
         binding.proposalList.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.proposalList.setAdapter(new ProposedTvdListAdapter(viewModel));
+        binding.proposalList.setAdapter(new ProposedEarTagListAdapter(viewModel));
         ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(getContext());
         cameraProviderFuture.addListener(() -> {
             try {
@@ -195,7 +195,7 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
      * It updates the list shown on the screen to the current one.
      */
     public void updateProposedList(List<ProposedEarTag> list){
-        ProposedTvdListAdapter adapter = (ProposedTvdListAdapter) binding.proposalList.getAdapter();
+        ProposedEarTagListAdapter adapter = (ProposedEarTagListAdapter) binding.proposalList.getAdapter();
         if (adapter != null) {
             adapter.submitList(list);
             adapter.notifyDataSetChanged();

@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import ch.band.manko.eartagreader.adapters.ProposedTvdListAdapter;
+import ch.band.manko.eartagreader.adapters.ProposedEarTagListAdapter;
 import ch.band.manko.eartagreader.data.EarTagRepository;
 import ch.band.manko.eartagreader.models.EarTag;
 import ch.band.manko.eartagreader.models.ProposedEarTag;
@@ -23,11 +23,11 @@ import ch.band.manko.eartagreader.models.ProposedEarTag;
  * the AnalysePhotoFragment class got a little to big.
  *
  * This class implements OnSuccessListener<String> because it needs to listen for tvd-number recognized
- * from the Camera. It also needs to implement ProposedTvdListAdapter.ItemInteractions to react to
+ * from the Camera. It also needs to implement ProposedEarTagListAdapter.ItemInteractions to react to
  * interactions with ProposedTvdNumbers.
  *
  */
-public class AnalysePhotoViewModel implements OnSuccessListener<String>, ProposedTvdListAdapter.ItemInteractions {
+public class AnalysePhotoViewModel implements OnSuccessListener<String>, ProposedEarTagListAdapter.ItemInteractions {
     private static final String TAG = AnalysePhotoViewModel.class.getSimpleName();
 
     private HashMap<String, ProposedEarTag> proposedEarTags;

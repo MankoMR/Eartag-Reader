@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="75"
-        tools:listitem="@layout/confirmed_tvdnumber_item" />
+        tools:listitem="@layout/confirmed_eartag_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAdd"

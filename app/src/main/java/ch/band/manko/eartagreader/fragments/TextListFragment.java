@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.List;
 
 import ch.band.manko.eartagreader.R;
-import ch.band.manko.eartagreader.adapters.ConfirmedTvdNumberListAdapter;
+import ch.band.manko.eartagreader.adapters.ConfirmedEarTagListAdapter;
 import ch.band.manko.eartagreader.data.EarTagRepository;
 import ch.band.manko.eartagreader.databinding.FragmentListBinding;
 import ch.band.manko.eartagreader.models.EarTag;
@@ -73,7 +73,7 @@ public class TextListFragment extends Fragment implements ActivityCompat.OnReque
         // Inflate the layout for this fragment
         binding = FragmentListBinding.inflate(inflater,container,false);
         binding.rvTextlist.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.rvTextlist.setAdapter(new ConfirmedTvdNumberListAdapter());
+        binding.rvTextlist.setAdapter(new ConfirmedEarTagListAdapter());
 
         binding.fabAdd.setOnClickListener(view->{
             //Ask for Permission to use the camera if permission isn't already granted.
@@ -110,7 +110,7 @@ public class TextListFragment extends Fragment implements ActivityCompat.OnReque
      * @param list
      */
     private void updateProposedList(List<EarTag> list){
-        ConfirmedTvdNumberListAdapter adapter = (ConfirmedTvdNumberListAdapter) binding.rvTextlist.getAdapter();
+        ConfirmedEarTagListAdapter adapter = (ConfirmedEarTagListAdapter) binding.rvTextlist.getAdapter();
         if(adapter == null)
             return;
         adapter.submitList(list);
