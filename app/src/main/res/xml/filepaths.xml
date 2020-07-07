@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020. Manuel Koloska, Band Genossenschaft. All rights reserved.
+  -->
+
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
     <files-path path="/lists/" name="tvdnumberlists" />
 </paths>

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2020. Manuel Koloska, Band Genossenschaft. All rights reserved.
+ */
+
 package ch.band.manko.eartagreader.fragments;
 
 import android.media.MediaPlayer;
