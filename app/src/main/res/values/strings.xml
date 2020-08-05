@@ -14,7 +14,7 @@
     <string name="confirm">Confirm</string>
     <string name="abort">Abort</string>
     <string name="storagelocation" translatable="false">lists</string>
-    <string name="authority" translatable="false">ch.band.manko.tvdnumberreader.fileprovider</string>
+    <string name="authority" translatable="false">ch.band.manko.eartagreader.fileprovider</string>
     <string name="share_title">Eartag-List</string>
     <string name="no_camera_permission">No permission to access camera.</string>
 </resources>
