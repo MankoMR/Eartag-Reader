@@ -69,8 +69,8 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
      * at the same time.
      */
     private void releaseMediaplayers(){
-        onAddPlayer.release();
-        newEntityPlayer.release();
+        if(onAddPlayer != null) onAddPlayer.release();
+        if(newEntityPlayer != null) newEntityPlayer.release();
         onAddPlayer = newEntityPlayer = null;
     }
     private void instantiateMediaPlayers(){
