@@ -62,7 +62,7 @@ public class AnalysePhotoViewModel implements OnSuccessListener<String>, Propose
     }
 
     /**
-     * If TextRecognizer recognized a new tvd-number it checks whether the number is already on the list
+     * If EarTagRecognizer recognized a new tvd-number it checks whether the number is already on the list
      * and if the proposal already exists. if it exists the occurrence-counter gets 1 added or a new
      * ProposedEarTag gets created. If necessary, the UI gets an update.
      *

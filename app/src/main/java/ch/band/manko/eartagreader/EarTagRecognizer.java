@@ -14,10 +14,10 @@ import androidx.camera.core.ImageProxy;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
-import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+import com.google.mlkit.vision.text.TextRecognizer;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -27,8 +27,8 @@ import java.util.regex.Pattern;
  * @See <a href="https://developer.android.com/training/camerax/analyze">Documentation</a>
  * @See <a href="https://codelabs.developers.google.com/codelabs/camerax-getting-started/#0">Tutorial</a>
  */
-public class TextRecognizer implements ImageAnalysis.Analyzer {
-    private static final String TAG = TextRecognizer.class.getSimpleName();
+public class EarTagRecognizer implements ImageAnalysis.Analyzer {
+    private static final String TAG = EarTagRecognizer.class.getSimpleName();
     //Matches tvd-number like patterns within a string.
     //Examples: Dd53453456, CH 2345 6547, ad 2356\t2356, 2352 2345
     private static final Pattern numberPattern = Pattern.compile("(([a-zA-Z]{2}\\s{0,3})?[0-9]{4}\\s{0,3}[0-9]{4})");
@@ -45,7 +45,7 @@ public class TextRecognizer implements ImageAnalysis.Analyzer {
      * @param resultListener: Is a OnSuccessListener<String> which gets invocated each time the text
      *                        recognized, could possibly be a tvd-number.
      */
-    public TextRecognizer(OnSuccessListener<String> resultListener){
+    public EarTagRecognizer(OnSuccessListener<String> resultListener){
         this.listener = resultListener;
     }
 
@@ -106,22 +106,26 @@ public class TextRecognizer implements ImageAnalysis.Analyzer {
     @SuppressLint("UnsafeExperimentalUsageError")
     private void processImage(ImageProxy imageProxy, Degrees rotation){
         FirebaseVisionImage image;
+        InputImage image;
         try {
             image =
                     FirebaseVisionImage.fromMediaImage(Objects.requireNonNull(imageProxy.getImage()), rotation.rotation);
+                    InputImage.fromMediaImage(Objects.requireNonNull(imageProxy.getImage()), rotation.rotation);
         }catch (IllegalStateException e){
             Log.d(TAG,"couldn't open image",e);
             imageProxy.close();
             return;
         }
+        TextRecognizer detector = TextRecognition.getClient();
         // Pass image to an ML Kit Vision API
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
                 .getOnDeviceTextRecognizer();
         detector.processImage(image)
+        detector.process(image)
                 //If it finds text this part will be executed.
-            .addOnSuccessListener(firebaseVisionText -> {
+            .addOnSuccessListener(Text -> {
                 closeImageProxySimple(imageProxy);
-                String text = filterText(firebaseVisionText);
+                String text = filterText(Text);
                 success = text != null;
                 listener.onSuccess(text);
             })
@@ -146,6 +150,7 @@ public class TextRecognizer implements ImageAnalysis.Analyzer {
 
     /**
      * It filters the FirebaseVisionText text for a tvd-number. Other content gets discarded.
+     * It filters the Text text for a tvd-number. Other content gets discarded.
      *
      * It doesn't support the case in which multiple tvd number are contained in the text. In that
      * case it returns the first found tvd-number.
@@ -153,7 +158,7 @@ public class TextRecognizer implements ImageAnalysis.Analyzer {
      * @param text: The text which might contain the tvd-number.
      * @return a proper formatted tvd-number if found or else null when found nothing.
      */
-    private String filterText(FirebaseVisionText text){
+    private String filterText(Text text){
         String result = "";
         Matcher match = numberPattern.matcher(text.getText());
         if(match.find()){
@@ -171,10 +176,10 @@ public class TextRecognizer implements ImageAnalysis.Analyzer {
     }
 
     public enum Degrees {
-        _0(FirebaseVisionImageMetadata.ROTATION_0),
-        _90(FirebaseVisionImageMetadata.ROTATION_90),
-        _180(FirebaseVisionImageMetadata.ROTATION_180),
-        _270(FirebaseVisionImageMetadata.ROTATION_270);
+        _0(0),
+        _90(90),
+        _180(180),
+        _270(270);
 
         public  int rotation;
 

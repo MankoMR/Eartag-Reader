@@ -34,8 +34,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import ch.band.manko.eartagreader.AnalysePhotoViewModel;
+import ch.band.manko.eartagreader.EarTagRecognizer;
 import ch.band.manko.eartagreader.R;
-import ch.band.manko.eartagreader.TextRecognizer;
 import ch.band.manko.eartagreader.adapters.ProposedEarTagListAdapter;
 import ch.band.manko.eartagreader.databinding.FragmentAnalysePhotoBinding;
 import ch.band.manko.eartagreader.models.ProposedEarTag;
@@ -147,7 +147,7 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
                 .setTargetResolution(new Size(1080,1080))
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build();
-        analyzerUseCase.setAnalyzer(Executors.newSingleThreadExecutor(), new TextRecognizer(viewModel));
+        analyzerUseCase.setAnalyzer(Executors.newSingleThreadExecutor(), new EarTagRecognizer(viewModel));
         cameraProvider.unbindAll();
 
         //Gets a camera object to control the flashlight and binds the lifecyle of the objects to
