@@ -13,10 +13,9 @@ import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.ml.vision.FirebaseVision;
-import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
-import com.google.firebase.ml.vision.text.FirebaseVisionText;
-import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+import com.google.mlkit.vision.common.InputImage;
+import com.google.mlkit.vision.text.Text;
+import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 
 import java.util.Objects;
@@ -105,11 +104,9 @@ public class EarTagRecognizer implements ImageAnalysis.Analyzer {
      */
     @SuppressLint("UnsafeExperimentalUsageError")
     private void processImage(ImageProxy imageProxy, Degrees rotation){
-        FirebaseVisionImage image;
         InputImage image;
         try {
             image =
-                    FirebaseVisionImage.fromMediaImage(Objects.requireNonNull(imageProxy.getImage()), rotation.rotation);
                     InputImage.fromMediaImage(Objects.requireNonNull(imageProxy.getImage()), rotation.rotation);
         }catch (IllegalStateException e){
             Log.d(TAG,"couldn't open image",e);
@@ -118,9 +115,6 @@ public class EarTagRecognizer implements ImageAnalysis.Analyzer {
         }
         TextRecognizer detector = TextRecognition.getClient();
         // Pass image to an ML Kit Vision API
-        FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
-                .getOnDeviceTextRecognizer();
-        detector.processImage(image)
         detector.process(image)
                 //If it finds text this part will be executed.
             .addOnSuccessListener(Text -> {
@@ -149,7 +143,6 @@ public class EarTagRecognizer implements ImageAnalysis.Analyzer {
     }
 
     /**
-     * It filters the FirebaseVisionText text for a tvd-number. Other content gets discarded.
      * It filters the Text text for a tvd-number. Other content gets discarded.
      *
      * It doesn't support the case in which multiple tvd number are contained in the text. In that
