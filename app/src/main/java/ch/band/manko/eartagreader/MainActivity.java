@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             //create and share file
             try {
                 Uri file = createFile(name,repository);
-                share(file,"text/csv");
+                share(file,"text/csv",name);
             } catch (IOException | ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -171,14 +171,16 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param uri: The Uri which points to a file.
      * @param mimetype: The type of content of the file.
+     * @param title: Title of the share dialog.
      */
-    private void share(Uri uri,String mimetype){
+    private void share(Uri uri,String mimetype,String  title){
         Intent toshare = new Intent(Intent.ACTION_SEND);
         //Grants temporary read permission
         toshare.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         toshare.putExtra(Intent.EXTRA_STREAM,uri.normalizeScheme());
         toshare.setType(mimetype);
-        startActivity(Intent.createChooser(toshare,getString(R.string.share_title)));
+        //toshare.setDataAndTypeAndNormalize(uri,mimetype);
+        startActivity(Intent.createChooser(toshare,title));
     }
 
     /**
