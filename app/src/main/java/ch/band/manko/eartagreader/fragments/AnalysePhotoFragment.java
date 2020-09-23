@@ -140,7 +140,7 @@ public class AnalysePhotoFragment extends Fragment implements AnalysePhotoViewMo
                 //.setTargetResolution(new Size(720,720)))
                 .setTargetResolution(new Size(1080,1080))
                 .build();
-        preview.setSurfaceProvider(binding.tvCamStream.createSurfaceProvider());
+        preview.setSurfaceProvider(binding.tvCamStream.getSurfaceProvider());
 
         // Setup the image analysis use case and instantiate the analyzer
         ImageAnalysis analyzerUseCase = new ImageAnalysis.Builder()
