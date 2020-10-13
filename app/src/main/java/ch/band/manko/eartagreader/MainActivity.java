@@ -24,6 +24,7 @@ import androidx.navigation.Navigation;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -61,7 +62,12 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                if(destination.getId() == R.layout.fragment_analyse_photo){
+                /*String text = "DisplayName: " + destination.getDisplayName()
+                        + "\n Id:" + getResources().getResourceName(destination.getId())
+                        + "\n Label: " + destination.getLabel();
+                Toast.makeText(getApplicationContext(),text,Toast.LENGTH_LONG).show();
+                 */
+                if(destination.getId() == R.id.AddFragment){
                     setMenuVisibility(false);
                 }else {
                     setMenuVisibility(true);
@@ -92,6 +98,12 @@ public class MainActivity extends AppCompatActivity {
         MenuItem share = binding.toolbar.getMenu().findItem(R.id.share);
         if(share == null)
             return;
+        if(repository.getAll().getValue() != null){
+            boolean shouldNotBeVisible =  repository.getAll().getValue().size() == 0;
+            if(isVisible && shouldNotBeVisible){
+                isVisible = false;
+            }
+        }
         share.setEnabled(isVisible);
         share.setVisible(isVisible);
         MenuItem delete = binding.toolbar.getMenu().findItem(R.id.clear_list);
