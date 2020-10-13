@@ -15,6 +15,7 @@ public class ProposedEarTag implements Comparable<ProposedEarTag> {
     public String number;
     public int occurrence;
     public boolean isRegistered;
+    public boolean isValid;
 
     /**
      * Creates a ProposedEarTag.
@@ -27,6 +28,7 @@ public class ProposedEarTag implements Comparable<ProposedEarTag> {
         this.number = number;
         this.occurrence = occurrence;
         this.isRegistered = isRegistered;
+        this.isValid = EarTag.isEartagNumber(number);
     }
     @Override
     public boolean equals(Object o) {
@@ -35,6 +37,7 @@ public class ProposedEarTag implements Comparable<ProposedEarTag> {
         ProposedEarTag that = (ProposedEarTag) o;
         return occurrence == that.occurrence &&
                 isRegistered == that.isRegistered &&
+                isValid == that.isValid &&
                 number.equals(that.number);
     }
     @Override

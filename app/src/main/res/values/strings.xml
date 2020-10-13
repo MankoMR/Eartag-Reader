@@ -17,4 +17,8 @@
     <string name="authority" translatable="false">ch.band.manko.eartagreader.fileprovider</string>
     <string name="share_title">Eartag-List</string>
     <string name="no_camera_permission">No permission to access camera.</string>
+    <string name="import_sucessful">Import succeded.</string>
+    <string name="import_file_incompatible">This file can not be imported.</string>
+    <string name="import_parse_error">Error while importing the file. Try importing the file again.</string>
+    <string name="import_save_entry">Entry added to the App.</string>
 </resources>

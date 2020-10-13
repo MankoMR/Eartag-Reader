@@ -4,56 +4,51 @@
 
 package ch.band.manko.eartagreader;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.collection.ArraySet;
-import androidx.core.content.FileProvider;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.room.util.FileUtil;
 
 import android.content.Intent;
-import android.content.UriMatcher;
-import android.database.Cursor;
-import android.graphics.drawable.Icon;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.FileObserver;
-import android.os.FileUtils;
-import android.os.Parcelable;
-import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.opencsv.CSVParser;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
-import ch.band.manko.eartagreader.adapters.ConfirmedEarTagListAdapter;
 import ch.band.manko.eartagreader.adapters.ProposedEarTagListAdapter;
 import ch.band.manko.eartagreader.data.EarTagRepository;
 import ch.band.manko.eartagreader.databinding.FragmentListBinding;
 import ch.band.manko.eartagreader.models.EarTag;
 import ch.band.manko.eartagreader.models.ProposedEarTag;
 
+import static android.util.TypedValue.COMPLEX_UNIT_SP;
+
 public class ImportCsvActivity extends AppCompatActivity {
 	private static final String TAG = ImportCsvActivity.class.getName();
 	FragmentListBinding binding;
 	EarTagRepository repository;
+	public List<ProposedEarTag> proposedEarTagList = new ArrayList<>();
+	private static int tv_error_id = View.generateViewId();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		binding = FragmentListBinding.inflate(getLayoutInflater());
-		binding.fabAdd.setImageResource(R.drawable.ic_baseline_save_24);
+		binding.fabAdd.setImageResource(R.drawable.ic_check_black_24dp);
 		setContentView(binding.getRoot());
 		repository = new EarTagRepository(getApplicationContext());
 		Intent intent = getIntent();
@@ -65,31 +60,32 @@ public class ImportCsvActivity extends AppCompatActivity {
 		ProposedEarTagListAdapter adapter = new ProposedEarTagListAdapter(new ProposedEarTagListAdapter.ItemInteractions() {
 			@Override
 			public void onConfirm(ProposedEarTag tvd, int position) {
+				ProposedEarTagListAdapter _adapter = (ProposedEarTagListAdapter) binding.rvTextlist.getAdapter();
 				repository.addEarTag(new EarTag(tvd.number));
+				proposedEarTagList.get(position).isRegistered = true;
+				_adapter.submitList(proposedEarTagList);
+				_adapter.notifyDataSetChanged();
+				Toast.makeText(getApplicationContext(),R.string.import_save_entry,Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
 			public void onRemove(ProposedEarTag tvd, int position) {
+				proposedEarTagList.remove(position);
+				ProposedEarTagListAdapter _adapter = (ProposedEarTagListAdapter) binding.rvTextlist.getAdapter();
+				_adapter.submitList(proposedEarTagList);
+				_adapter.notifyDataSetChanged();
 			}
 		});
 		binding.rvTextlist.setAdapter(adapter);
-		adapter.submitList(open(uri));
+		proposedEarTagList = open(uri);
+		adapter.submitList(proposedEarTagList);
 		adapter.notifyDataSetChanged();
+		ImportCsvActivity activity = this;
 		binding.fabAdd.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				for(ProposedEarTag tag: adapter.getCurrentList()){
-					try {
-						EarTag earTag = new EarTag(tag.number);
-						if(!repository.containsEarTag(earTag).get()){
-							repository.addEarTag(earTag);
-							tag.isRegistered = true;
-						}
-					} catch (ExecutionException | InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				adapter.notifyDataSetChanged();
+				Toast.makeText(getApplicationContext(),R.string.import_sucessful,Toast.LENGTH_LONG).show();
+				activity.finishAfterTransition();
 			}
 		});
 	}
@@ -98,28 +94,50 @@ public class ImportCsvActivity extends AppCompatActivity {
 		try {
 			InputStream stream = getContentResolver().openInputStream(uri);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+			CSVParser parser = new CSVParser();
+			parser.setErrorLocale(Locale.getDefault());
 			reader.readLine();
 			String line = reader.readLine();
 			 do {
-			 	String[] fields = line.split(",");
+			 	String[] fields = parser.parseLine(line);
 				 for (String field : fields) {
-					 if (EarTag.isEartagNumber(line)) {
-						 line = EarTag.formatNumber(line);
-					 }
-					 try {
-						 list.add(new ProposedEarTag(line,1,repository.containsEarTag(new EarTag(line)).get()));
-					 } catch (InterruptedException | ExecutionException e) {
-						 e.printStackTrace();
-					 }
+				 	if (EarTag.isEartagNumber(field)) {
+				 		field = EarTag.formatNumber(field);
+				 		list.add(new ProposedEarTag(field,-1,repository.containsEarTag(new EarTag(field)).get()));
+						break;
+				 	}
 				 }
-				line = reader.readLine();
+				 line = reader.readLine();
 			} while (line != null);
-		} catch (FileNotFoundException e) {
+		} catch (IOException | ExecutionException | InterruptedException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			addErrorText(R.string.import_parse_error);
+		}
+		if(list.isEmpty()){
+			addErrorText(R.string.import_file_incompatible);
 		}
 		Log.d(TAG, "open: Listsize: "+list.size());
 		return list;
+	}
+	private void addErrorText(@StringRes int description){
+		TextView textView = (TextView) binding.getRoot().getViewById(tv_error_id);
+		if(textView != null){
+			textView.setText(description);
+			return;
+		}
+		ConstraintLayout.LayoutParams layoutparams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT,ConstraintLayout.LayoutParams.WRAP_CONTENT);
+		layoutparams.topToTop = R.id.fragListRoot;
+		layoutparams.bottomToBottom = R.id.fragListRoot;
+		layoutparams.leftToLeft = R.id.fragListRoot;
+		layoutparams.rightToRight = R.id.fragListRoot;
+		textView = new TextView(getApplicationContext());
+		textView.setId(tv_error_id);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			textView.setTextAppearance(R.style.TextAppearance_AppCompat_Large);
+		}else {
+			textView.setTextSize(COMPLEX_UNIT_SP,22);
+		}
+		textView.setText(description);
+		binding.getRoot().addView(textView,layoutparams);
 	}
 }

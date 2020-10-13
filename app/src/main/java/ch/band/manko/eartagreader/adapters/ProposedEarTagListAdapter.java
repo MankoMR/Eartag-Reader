@@ -81,7 +81,9 @@ public class ProposedEarTagListAdapter extends ListAdapter<ProposedEarTag, Propo
         public void setContent(ProposedEarTag proposedEarTag, int position){
             this.proposedEarTag = proposedEarTag;
             binding.text.setText(proposedEarTag.number);
-            binding.occurence.setText(String.format("%d",proposedEarTag.occurrence));
+            if(proposedEarTag.occurrence >= 0 ){
+                binding.occurence.setText(String.format("%d",proposedEarTag.occurrence));
+            }
             if (proposedEarTag.isRegistered){
                 int color = ResourcesCompat.getColor(binding.getRoot().getResources(),R.color.exist,null);
                 binding.resultItemCard.setCardBackgroundColor(color);
@@ -90,6 +92,13 @@ public class ProposedEarTagListAdapter extends ListAdapter<ProposedEarTag, Propo
                 int color = ResourcesCompat.getColor(binding.getRoot().getResources(),R.color.design_default_color_background,null);
                 binding.resultItemCard.setCardBackgroundColor(color);
                 binding.confirm.setVisibility(View.VISIBLE);
+            }
+            if(!proposedEarTag.isRegistered && !proposedEarTag.isValid){
+                binding.cancel.setVisibility(View.INVISIBLE);
+                binding.cancel.setEnabled(false);
+                binding.confirm.setVisibility(View.INVISIBLE);
+                binding.confirm.setEnabled(false);
+                binding.text.setEnabled(false);
             }
             this.position = position;
         }

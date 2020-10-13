@@ -11,10 +11,15 @@ import android.net.Uri;
 import android.os.Bundle;
 
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.Menu;
@@ -52,7 +57,17 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         repository = new EarTagRepository(getApplicationContext());
-
+        NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                if(destination.getId() == R.layout.fragment_analyse_photo){
+                    setMenuVisibility(false);
+                }else {
+                    setMenuVisibility(true);
+                }
+            }
+        });
     }
     /**
      * @See <a href="https://developer.android.com/training/appbar">Appbar</a>
@@ -68,15 +83,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<EarTag> earTags) {
                 boolean showShareButton = earTags.size() > 0;
-                MenuItem share = binding.toolbar.getMenu().findItem(R.id.share);
-                share.setEnabled(showShareButton);
-                share.setVisible(showShareButton);
-                MenuItem delete = binding.toolbar.getMenu().findItem(R.id.clear_list);
-                delete.setEnabled(showShareButton);
-                delete.setVisible(showShareButton);
+                setMenuVisibility(showShareButton);
             }
         });
         return true;
+    }
+    public void setMenuVisibility(boolean isVisible){
+        MenuItem share = binding.toolbar.getMenu().findItem(R.id.share);
+        if(share == null)
+            return;
+        share.setEnabled(isVisible);
+        share.setVisible(isVisible);
+        MenuItem delete = binding.toolbar.getMenu().findItem(R.id.clear_list);
+        delete.setEnabled(isVisible);
+        delete.setVisible(isVisible);
     }
 
     /**
