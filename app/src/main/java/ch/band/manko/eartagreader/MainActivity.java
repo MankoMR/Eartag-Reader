@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private EarTagRepository repository;
+    private boolean menuVisibility = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,15 +90,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<EarTag> earTags) {
                 boolean showShareButton = earTags.size() > 0;
-                setMenuVisibility(showShareButton);
+                updateMenuVisibility();
             }
         });
         return true;
     }
-    public void setMenuVisibility(boolean isVisible){
+    private void updateMenuVisibility(){
         MenuItem share = binding.toolbar.getMenu().findItem(R.id.share);
         if(share == null)
             return;
+        boolean isVisible = menuVisibility;
         if(repository.getAll().getValue() != null){
             boolean shouldNotBeVisible =  repository.getAll().getValue().size() == 0;
             if(isVisible && shouldNotBeVisible){
@@ -109,6 +111,10 @@ public class MainActivity extends AppCompatActivity {
         MenuItem delete = binding.toolbar.getMenu().findItem(R.id.clear_list);
         delete.setEnabled(isVisible);
         delete.setVisible(isVisible);
+    }
+    public void setMenuVisibility(boolean isVisible){
+        menuVisibility = isVisible;
+        updateMenuVisibility();
     }
 
     /**
