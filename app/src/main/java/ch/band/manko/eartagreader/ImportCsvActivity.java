@@ -90,6 +90,9 @@ public class ImportCsvActivity extends AppCompatActivity {
 		});
 	}
 	private List<ProposedEarTag> open(Uri uri){
+		if(uri == null){
+			addErrorText(R.string.import_file_incompatible);
+		}
 		List<ProposedEarTag> list = new ArrayList<>();
 		try {
 			InputStream stream = getContentResolver().openInputStream(uri);
@@ -98,6 +101,10 @@ public class ImportCsvActivity extends AppCompatActivity {
 			parser.setErrorLocale(Locale.getDefault());
 			reader.readLine();
 			String line = reader.readLine();
+			if(line == null){
+				addErrorText(R.string.import_file_empty);
+				return list;
+			}
 			 do {
 			 	String[] fields = parser.parseLine(line);
 				 for (String field : fields) {

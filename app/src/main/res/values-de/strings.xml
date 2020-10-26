@@ -20,4 +20,6 @@
     <string name="import_file_incompatible">Die Datei kann nicht importiert werden.</string>
     <string name="import_parse_error">Fehler während dem Importieren. Versuche die Datei nochmals zu importieren</string>
     <string name="import_save_entry">Eintrag der App hinzugefügt.</string>
+    <string name="about">about</string>
+    <string name="import_file_empty">Die Datei scheint leer zu sein.</string>
 </resources>

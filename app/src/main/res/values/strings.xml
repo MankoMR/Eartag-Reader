@@ -21,4 +21,8 @@
     <string name="import_file_incompatible">This file can not be imported.</string>
     <string name="import_parse_error">Error while importing the file. Try importing the file again.</string>
     <string name="import_save_entry">Entry added to the App.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="about">about</string>
+    <string name="import_file_empty">This is file seems to be empty</string>
 </resources>
