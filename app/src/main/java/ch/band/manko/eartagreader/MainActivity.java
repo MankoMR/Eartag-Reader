@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -19,7 +20,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.Menu;
@@ -48,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private EarTagRepository repository;
-    private boolean menuVisibility = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +70,11 @@ public class MainActivity extends AppCompatActivity {
                         + "\n Label: " + destination.getLabel();
                 Toast.makeText(getApplicationContext(),text,Toast.LENGTH_LONG).show();
                  */
-                if(destination.getId() == R.id.AddFragment){
-                    setMenuVisibility(false);
-                }else {
-                    setMenuVisibility(true);
-                }
+                updateMenuVisibility(destination.getId());
             }
         });
     }
+
     /**
      * @See <a href="https://developer.android.com/training/appbar">Appbar</a>
      */
@@ -84,37 +83,36 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         //it also needs to be inflated before it can be used
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        //Necessary to update the visibility of the correct actions.
+        NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
+        updateMenuVisibility(navController.getCurrentBackStackEntry().getDestination().getId());
+        return true;
+    }
+    private void updateMenuVisibility(@IdRes int viewId){
+        MenuItem share = binding.toolbar.getMenu().findItem(R.id.share);
+        MenuItem delete = binding.toolbar.getMenu().findItem(R.id.clear_list);
+        if( about == null || share == null || delete == null){
+            return;
+        }
+
         //with the following statement it observes the tvd-number list and if the list is empty it hides the
         //share and delete button, since there nothing to share or delete.
+        //It will also hide the options when it doesn't show the EarTagList.
         repository.getAll().observe(this, new Observer<List<EarTag>>() {
             @Override
             public void onChanged(List<EarTag> earTags) {
-                boolean showShareButton = earTags.size() > 0;
-                updateMenuVisibility();
+                boolean isVisible = viewId == R.id.MainFragment;
+                    boolean shouldNotBeVisible =  earTags.size() == 0;
+                    Log.e(TAG,"Amount of Entries: "+earTags.size());
+                    if(isVisible && shouldNotBeVisible){
+                        isVisible = false;
+                    }
+                share.setEnabled(isVisible);
+                share.setVisible(isVisible);
+                delete.setEnabled(isVisible);
+                delete.setVisible(isVisible);
             }
         });
-        return true;
-    }
-    private void updateMenuVisibility(){
-        MenuItem share = binding.toolbar.getMenu().findItem(R.id.share);
-        if(share == null)
-            return;
-        boolean isVisible = menuVisibility;
-        if(repository.getAll().getValue() != null){
-            boolean shouldNotBeVisible =  repository.getAll().getValue().size() == 0;
-            if(isVisible && shouldNotBeVisible){
-                isVisible = false;
-            }
-        }
-        share.setEnabled(isVisible);
-        share.setVisible(isVisible);
-        MenuItem delete = binding.toolbar.getMenu().findItem(R.id.clear_list);
-        delete.setEnabled(isVisible);
-        delete.setVisible(isVisible);
-    }
-    public void setMenuVisibility(boolean isVisible){
-        menuVisibility = isVisible;
-        updateMenuVisibility();
     }
 
     /**
@@ -148,8 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             return true;
-        }
-        if (id == R.id.clear_list) {
+        } else if (id == R.id.clear_list) {
             //ask user for confirmation before deleting the tvd-number list
             AlertDialog dialog = buildDialog(new DialogInterface.OnClickListener() {
                 @Override
