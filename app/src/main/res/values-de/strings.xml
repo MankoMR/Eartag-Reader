@@ -22,4 +22,7 @@
     <string name="import_save_entry">Eintrag der App hinzugefügt.</string>
     <string name="about">about</string>
     <string name="import_file_empty">Die Datei scheint leer zu sein.</string>
+    <string name="about_version_title">version:</string>
+    <string name="about_project_site">Projectsite:</string>
+    <string name="about_copyright_notice">Copyright:</string>
 </resources>

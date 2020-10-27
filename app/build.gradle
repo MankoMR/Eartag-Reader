@@ -1,3 +1,6 @@
+import com.github.jk1.license.render.*
+import com.github.jk1.license.filter.LicenseBundleNormalizer
+
 /*
  * Copyright (c) 2020. Manuel Koloska, Band Genossenschaft. All rights reserved.
  */
@@ -5,12 +8,18 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: "androidx.navigation.safeargs"
+apply plugin:  'com.github.jk1.dependency-license-report'
 
 // Initialize a new Properties() object called keystoreProperties.
 def keystoreProperties = new Properties()
 // Load your keystore.properties file into the keystoreProperties object.
 keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
 
+licenseReport {
+    outputDir = "$projectDir/build/generated/res/raw/licenses"
+    renderers = [new InventoryHtmlReportRenderer(),new JsonReportRenderer()]
+    filters = [ new LicenseBundleNormalizer()]
+}
 android {
     signingConfigs {
         config {
