@@ -27,7 +27,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -89,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
     private void updateMenuVisibility(@IdRes int viewId){
+        MenuItem about = binding.toolbar.getMenu().findItem(R.id.about);
         MenuItem share = binding.toolbar.getMenu().findItem(R.id.share);
         MenuItem delete = binding.toolbar.getMenu().findItem(R.id.clear_list);
         if( about == null || share == null || delete == null){
@@ -113,6 +113,10 @@ public class MainActivity extends AppCompatActivity {
                 delete.setVisible(isVisible);
             }
         });
+
+        boolean showAbout = viewId != R.id.aboutFragment;
+        about.setEnabled(showAbout);
+        about.setVisible(showAbout);
     }
 
     /**
@@ -156,6 +160,11 @@ public class MainActivity extends AppCompatActivity {
             });
             dialog.show();
             return true;
+        } else if (id == R.id.about){
+            NavDirections action = NavGraphDirections.actionGlobalAboutFragment();
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            NavController navController = navHostFragment.getNavController();
+            navController.navigate(action);
         }
 
         return super.onOptionsItemSelected(item);

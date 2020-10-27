@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_share_black_24dp"
         android:title="@string/share_list"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/about"
+        android:icon="@drawable/ic_baseline_info_24"
+        android:title="@string/about"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -29,4 +29,10 @@
             android:id="@+id/action_ShowList"
             app:destination="@id/MainFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="ch.band.manko.eartagreader.fragments.About_Fragment"
+        android:label="@string/about"
+        tools:layout="@layout/fragment_about_" />
+    <action android:id="@+id/action_global_about_Fragment" app:destination="@id/aboutFragment" />
 </navigation>
