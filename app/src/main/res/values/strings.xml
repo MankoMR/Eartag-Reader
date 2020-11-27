@@ -25,4 +25,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="about">about</string>
     <string name="import_file_empty">This is file seems to be empty</string>
+    <string name="about_version_title">version:</string>
+    <string name="about_project_site">Projectsite:</string>
+    <string name="about_copyright_notice">Copyright:</string>
 </resources>
