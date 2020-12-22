@@ -31,7 +31,7 @@ android {
     }
 
     compileSdkVersion 30
-    buildToolsVersion '30.0.2'
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
         applicationId 'ch.band.manko.eartagreader'
@@ -70,15 +70,15 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.navigation:navigation-fragment:2.3.1'
-    implementation 'androidx.navigation:navigation-ui:2.3.1'
+    implementation 'androidx.navigation:navigation-fragment:2.3.2'
+    implementation 'androidx.navigation:navigation-ui:2.3.2'
     implementation('com.opencsv:opencsv:5.3'){
         exclude group: 'commons-logging', module: 'commons-logging'
     }
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
 
-    def room_version = "2.2.5"
+    def room_version = '2.2.6'
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version" // For Kotlin use kapt instead of annotationProcessor
     testImplementation "androidx.room:room-testing:$room_version"
@@ -92,13 +92,13 @@ dependencies {
 
 
 
-    def camerax_version = '1.0.0-beta12'
+    def camerax_version = '1.0.0-rc01'
     implementation "androidx.camera:camera-core:${camerax_version}"
     implementation "androidx.camera:camera-camera2:${camerax_version}"
     implementation "androidx.camera:camera-lifecycle:${camerax_version}"
-    implementation 'androidx.camera:camera-view:1.0.0-alpha19'
+    implementation 'androidx.camera:camera-view:1.0.0-alpha20'
 
-    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:16.1.1'
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:16.1.2'
 
 
 
