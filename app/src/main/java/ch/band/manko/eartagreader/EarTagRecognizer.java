@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
 
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
@@ -36,7 +37,7 @@ public class EarTagRecognizer implements ImageAnalysis.Analyzer {
 
     private Degrees currentRotation = Degrees._0;
     private boolean success = false;
-    private OnSuccessListener<String> listener;
+    final OnSuccessListener<String> listener;
 
     /**
      * Create a new Textrecognizer
@@ -44,7 +45,7 @@ public class EarTagRecognizer implements ImageAnalysis.Analyzer {
      * @param resultListener: Is a OnSuccessListener<String> which gets invocated each time the text
      *                        recognized, could possibly be a tvd-number.
      */
-    public EarTagRecognizer(OnSuccessListener<String> resultListener){
+    public EarTagRecognizer(@NonNull OnSuccessListener<String> resultListener){
         this.listener = resultListener;
     }
 
@@ -59,7 +60,7 @@ public class EarTagRecognizer implements ImageAnalysis.Analyzer {
 
         Image mediaImage = imageProxy.getImage();
         //May stop crash through NullPointerExeption.
-        if (mediaImage == null || listener == null) {
+        if (mediaImage == null) {
             imageProxy.close();
             return;
         }
@@ -126,6 +127,12 @@ public class EarTagRecognizer implements ImageAnalysis.Analyzer {
                 //if it there some error this part will be executed.
             .addOnFailureListener(e -> {
                 Log.e(TAG,"Textrecognition failed:",e);
+                success = false;
+                closeImageProxySimple(imageProxy);
+            })
+                //if for some reason the task would get canceled.
+            .addOnCanceledListener(() -> {
+                Log.e(TAG,"Textrecognition got canceled:");
                 success = false;
                 closeImageProxySimple(imageProxy);
             });
