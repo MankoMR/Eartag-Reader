@@ -22,6 +22,17 @@ The first time, permission is asked to use a camera on the back of the phone.
 1. Button to add the corresponding earmark number to the list.
 1. Button to temporarily remove an earmark number.
 
+## Example Eartaglabel
+
+If you want to test the app here's an image to test the app on:
+
+![Image of a clean eartag label](docs/images/example_eartag_label.jpg)
+![Image of another clean eartag label](docs/images/example_eartag_label_2.jpg)
+
+**Note:** Please be aware that the app has problem recognizing the  text if label is soiled.
+
+![Image of a soiled eartag label](docs/images/example_eartag_label_soiled.jpg)
+
 ## Compiling Eartag-Reader
 
 To compile the app after version 1.2.1 (more precisely after [commit e15ae57e9df65d66020e68c4021f91385ceded0d](https://github.com/MankoMR/Eartag-Reader/commit/e15ae57e9df65d66020e68c4021f91385ceded0d) ) it's necessary to add a file called ```keystore.properties``` in the project folder.
