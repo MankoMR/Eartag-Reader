@@ -7,7 +7,7 @@ Reads the Tvdnumber from the earmarks of sheeps
 ![Partial image of the first screen](docs/images/bedienung1.png)
 
 1. Button to delete the list of earmark numbers after confirmation.
-2. Button to share the list with capable apps or to save the list.
+2. Button to share the list with capable apps or to save the list.  
 **Note:** The first two buttons only appear when at least one earmark is added to the list. 3.
 3. Region in which the list is displayed.
 4. Button to add more eartag numbers to the list.
